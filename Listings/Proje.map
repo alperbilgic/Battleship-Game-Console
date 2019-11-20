@@ -1,0 +1,460 @@
+Component: ARM Compiler 5.06 update 6 (build 750) Tool: armlink [4d35ed]
+
+==============================================================================
+
+Section Cross References
+
+    startup.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(RESET) refers to startup.o(STACK) for StackMem
+    startup.o(RESET) refers to systickhandler.o(subroutin) for SysTick_Handler
+    startup.o(RESET) refers to maincursor.o(subroutin) for __main
+    startup.o(RESET) refers to delayy.o(subroutin) for delayy
+    startup.o(RESET) refers to buttonhandler.o(subroutin) for buttons
+    startup.o(RESET) refers to buttons2.o(part1) for buttons2
+    startup.o(.text) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
+    startup.o(.text) refers to startup.o(HEAP) for HeapMem
+    startup.o(.text) refers to startup.o(STACK) for StackMem
+    fillzero.o(subroutin) refers to senddc.o(subroutin) for sendDC
+    maincursor.o(subroutin) refers to initgpio.o(subroutin) for initGPIO
+    maincursor.o(subroutin) refers to initssi.o(subroutin) for initSSI
+    maincursor.o(subroutin) refers to screenzero.o(part1) for screenzero
+    maincursor.o(subroutin) refers to delayy.o(subroutin) for delayy
+    maincursor.o(subroutin) refers to senddc.o(subroutin) for sendDC
+    maincursor.o(subroutin) refers to fillzero.o(subroutin) for fillzero
+    maincursor.o(subroutin) refers to gpio_f.o(subroutin) for gpio_f
+    maincursor.o(subroutin) refers to deneme.o(part1) for get_rc
+    maincursor.o(subroutin) refers to and_or.o(part1) for screen
+    maincursor.o(subroutin) refers to newscreenzero.o(part1) for newscreenzero
+    maincursor.o(subroutin) refers to screen3.o(part1) for screen3
+    maincursor.o(subroutin) refers to mine.o(part1) for mines
+    maincursor.o(subroutin) refers to screen2.o(part1) for screen2
+    maincursor.o(subroutin) refers to systick.o(initisr) for InitSysTick
+    deneme.o(part1) refers to get_column.o(part1) for get_row_col
+    buttonhandler.o(subroutin) refers to battleshipmult.o(subroutin) for battleship
+    buttonhandler.o(subroutin) refers to civilian.o(subroutin) for civilian
+    civilian.o(subroutin) refers to and_or.o(part1) for screen
+    battleshipmult.o(subroutin) refers to battlescreen.o(subroutin) for battlescreen
+    battleshipmult.o(subroutin) refers to and_or.o(part1) for screen
+    mine.o(part1) refers to get_row_col_mine.o(part1) for get_row_col_mine
+    buttons2.o(part1) refers to get_row_col_mine.o(part1) for get_row_col_mine
+    systickhandler.o(subroutin) refers to timetable.o(subroutin) for timetable
+    timetable.o(subroutin) refers to senddc.o(subroutin) for sendDC
+    timetable.o(subroutin) refers to decision.o(part1) for decision
+    decision.o(part1) refers to p1_won.o(subroutin) for P1_won
+    decision.o(part1) refers to p2_won.o(subroutin) for P2_won
+    p1_won.o(subroutin) refers to initgpio.o(subroutin) for initGPIO
+    p1_won.o(subroutin) refers to initssi.o(subroutin) for initSSI
+    p1_won.o(subroutin) refers to fillzero.o(subroutin) for fillzero
+    p1_won.o(subroutin) refers to senddc.o(subroutin) for sendDC
+    p2_won.o(subroutin) refers to initgpio.o(subroutin) for initGPIO
+    p2_won.o(subroutin) refers to initssi.o(subroutin) for initSSI
+    p2_won.o(subroutin) refers to fillzero.o(subroutin) for fillzero
+    p2_won.o(subroutin) refers to senddc.o(subroutin) for sendDC
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing startup.o(HEAP), (0 bytes).
+    Removing startup.o(.text), (48 bytes).
+
+2 unused section(s) (total 48 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    RESET                                    0x00000000   Section      740  startup.o(RESET)
+    ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
+    Delayy.s                                 0x00000000   Number         0  delayy.o ABSOLUTE
+    Startup.s                                0x00000000   Number         0  startup.o ABSOLUTE
+    and_or.s                                 0x00000000   Number         0  and_or.o ABSOLUTE
+    battlescreen.s                           0x00000000   Number         0  battlescreen.o ABSOLUTE
+    battleshipmult.s                         0x00000000   Number         0  battleshipmult.o ABSOLUTE
+    buttonhandler.s                          0x00000000   Number         0  buttonhandler.o ABSOLUTE
+    buttons2.s                               0x00000000   Number         0  buttons2.o ABSOLUTE
+    civilian.s                               0x00000000   Number         0  civilian.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    decision.s                               0x00000000   Number         0  decision.o ABSOLUTE
+    deneme.s                                 0x00000000   Number         0  deneme.o ABSOLUTE
+    fillzero.s                               0x00000000   Number         0  fillzero.o ABSOLUTE
+    get_column.s                             0x00000000   Number         0  get_column.o ABSOLUTE
+    get_row_col_mine.s                       0x00000000   Number         0  get_row_col_mine.o ABSOLUTE
+    gpio_f.s                                 0x00000000   Number         0  gpio_f.o ABSOLUTE
+    initGPIO.s                               0x00000000   Number         0  initgpio.o ABSOLUTE
+    initSSI.s                                0x00000000   Number         0  initssi.o ABSOLUTE
+    maincursor.s                             0x00000000   Number         0  maincursor.o ABSOLUTE
+    mine.s                                   0x00000000   Number         0  mine.o ABSOLUTE
+    newscreenzero.s                          0x00000000   Number         0  newscreenzero.o ABSOLUTE
+    p1_won.s                                 0x00000000   Number         0  p1_won.o ABSOLUTE
+    p2_won.s                                 0x00000000   Number         0  p2_won.o ABSOLUTE
+    screen2.s                                0x00000000   Number         0  screen2.o ABSOLUTE
+    screen3.s                                0x00000000   Number         0  screen3.o ABSOLUTE
+    screenzero.s                             0x00000000   Number         0  screenzero.o ABSOLUTE
+    sendDC.s                                 0x00000000   Number         0  senddc.o ABSOLUTE
+    systick.s                                0x00000000   Number         0  systick.o ABSOLUTE
+    systickhandler.s                         0x00000000   Number         0  systickhandler.o ABSOLUTE
+    timetable.s                              0x00000000   Number         0  timetable.o ABSOLUTE
+    $v0                                      0x0000026c   Number         0  startup.o(RESET)
+    .text                                    0x000002e4   Section        0  heapauxi.o(.text)
+    initisr                                  0x000002ec   Section       40  systick.o(initisr)
+    $v0                                      0x000002ec   Number         0  systick.o(initisr)
+    part1                                    0x00000314   Section      128  deneme.o(part1)
+    $v0                                      0x00000314   Number         0  deneme.o(part1)
+    part1                                    0x00000394   Section      272  get_column.o(part1)
+    $v0                                      0x00000394   Number         0  get_column.o(part1)
+    part1                                    0x000004a4   Section       76  and_or.o(part1)
+    $v0                                      0x000004a4   Number         0  and_or.o(part1)
+    part1                                    0x000004f0   Section       44  screenzero.o(part1)
+    $v0                                      0x000004f0   Number         0  screenzero.o(part1)
+    part1                                    0x0000051c   Section       40  newscreenzero.o(part1)
+    $v0                                      0x0000051c   Number         0  newscreenzero.o(part1)
+    part1                                    0x00000544   Section      132  mine.o(part1)
+    $v0                                      0x00000544   Number         0  mine.o(part1)
+    part1                                    0x000005c8   Section      272  get_row_col_mine.o(part1)
+    $v0                                      0x000005c8   Number         0  get_row_col_mine.o(part1)
+    part1                                    0x000006d8   Section       56  screen2.o(part1)
+    $v0                                      0x000006d8   Number         0  screen2.o(part1)
+    part1                                    0x00000710   Section       56  screen3.o(part1)
+    $v0                                      0x00000710   Number         0  screen3.o(part1)
+    part1                                    0x00000748   Section      200  buttons2.o(part1)
+    $v0                                      0x00000748   Number         0  buttons2.o(part1)
+    part1                                    0x00000810   Section      112  decision.o(part1)
+    $v0                                      0x00000810   Number         0  decision.o(part1)
+    subroutin                                0x00000880   Section      112  initssi.o(subroutin)
+    $v0                                      0x00000880   Number         0  initssi.o(subroutin)
+    subroutin                                0x000008f0   Section      112  initgpio.o(subroutin)
+    $v0                                      0x000008f0   Number         0  initgpio.o(subroutin)
+    subroutin                                0x00000960   Section       20  delayy.o(subroutin)
+    $v0                                      0x00000960   Number         0  delayy.o(subroutin)
+    subroutin                                0x00000974   Section       44  senddc.o(subroutin)
+    $v0                                      0x00000974   Number         0  senddc.o(subroutin)
+    subroutin                                0x000009a0   Section       84  fillzero.o(subroutin)
+    $v0                                      0x000009a0   Number         0  fillzero.o(subroutin)
+    subroutin                                0x000009f4   Section      440  maincursor.o(subroutin)
+    $v0                                      0x000009f4   Number         0  maincursor.o(subroutin)
+    subroutin                                0x00000bac   Section       36  buttonhandler.o(subroutin)
+    $v0                                      0x00000bac   Number         0  buttonhandler.o(subroutin)
+    subroutin                                0x00000bd0   Section      176  gpio_f.o(subroutin)
+    $v0                                      0x00000bd0   Number         0  gpio_f.o(subroutin)
+    subroutin                                0x00000c80   Section      144  civilian.o(subroutin)
+    $v0                                      0x00000c80   Number         0  civilian.o(subroutin)
+    subroutin                                0x00000d10   Section      128  battleshipmult.o(subroutin)
+    $v0                                      0x00000d10   Number         0  battleshipmult.o(subroutin)
+    subroutin                                0x00000d90   Section       76  battlescreen.o(subroutin)
+    $v0                                      0x00000d90   Number         0  battlescreen.o(subroutin)
+    subroutin                                0x00000ddc   Section       52  systickhandler.o(subroutin)
+    $v0                                      0x00000ddc   Number         0  systickhandler.o(subroutin)
+    subroutin                                0x00000e10   Section     1552  timetable.o(subroutin)
+    $v0                                      0x00000e10   Number         0  timetable.o(subroutin)
+    subroutin                                0x00001420   Section      288  p1_won.o(subroutin)
+    $v0                                      0x00001420   Number         0  p1_won.o(subroutin)
+    subroutin                                0x00001540   Section      308  p2_won.o(subroutin)
+    $v0                                      0x00001540   Number         0  p2_won.o(subroutin)
+    STACK                                    0x20000000   Section     1024  startup.o(STACK)
+    StackMem                                 0x20000000   Data           0  startup.o(STACK)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv4$E$P$D$K$B$S$7EM$VFPi3$EXTD16$VFPS$VFMA$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$ROPI$EBA8$STANDARDLIB$REQ8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __Vectors                                0x00000000   Data           0  startup.o(RESET)
+    Reset_Handler                            0x0000026d   Thumb Code     0  startup.o(RESET)
+    NMI_Handler                              0x00000271   Thumb Code     2  startup.o(RESET)
+    HardFault_Handler                        0x00000273   Thumb Code     2  startup.o(RESET)
+    MemManage_Handler                        0x00000275   Thumb Code     2  startup.o(RESET)
+    BusFault_Handler                         0x00000277   Thumb Code     2  startup.o(RESET)
+    UsageFault_Handler                       0x00000279   Thumb Code     2  startup.o(RESET)
+    SVC_Handler                              0x0000027b   Thumb Code     2  startup.o(RESET)
+    DebugMon_Handler                         0x0000027d   Thumb Code     2  startup.o(RESET)
+    PendSV_Handler                           0x0000027f   Thumb Code     2  startup.o(RESET)
+    ADC0Seq0_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq1_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq2_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC0Seq3_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp0_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp1_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    Comp2_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    FlashCtl_Handler                         0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortA_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortB_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortC_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortD_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortE_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    GPIOPortF_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    I2C0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Fault_Handler                        0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator0_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator1_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    PWM0Generator2_Handler                   0x00000283   Thumb Code     0  startup.o(RESET)
+    Quadrature0_Handler                      0x00000283   Thumb Code     0  startup.o(RESET)
+    SSI0_Handler                             0x00000283   Thumb Code     0  startup.o(RESET)
+    SysCtl_Handler                           0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer0A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer0B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer1A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer1B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer2A_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    Timer2B_Handler                          0x00000283   Thumb Code     0  startup.o(RESET)
+    UART0_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    UART1_Handler                            0x00000283   Thumb Code     0  startup.o(RESET)
+    WDT_Handler                              0x00000283   Thumb Code     0  startup.o(RESET)
+    ADC1Seq0_Handler                         0x000002d3   Thumb Code     0  startup.o(RESET)
+    ADC1Seq1_Handler                         0x000002d3   Thumb Code     0  startup.o(RESET)
+    ADC1Seq2_Handler                         0x000002d3   Thumb Code     0  startup.o(RESET)
+    ADC1Seq3_Handler                         0x000002d3   Thumb Code     0  startup.o(RESET)
+    CAN0_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    CAN1_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    CAN2_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    Ethernet_Handler                         0x000002d3   Thumb Code     0  startup.o(RESET)
+    ExtBus_Handler                           0x000002d3   Thumb Code     0  startup.o(RESET)
+    FPU_Handler                              0x000002d3   Thumb Code     0  startup.o(RESET)
+    Fan0_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortG_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortH_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortJ_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortK_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortL_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortM_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortN_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP1_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP2_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP3_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP4_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP5_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP6_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP7_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortP_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ1_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ2_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ3_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ4_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ5_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ6_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ7_Handler                       0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortQ_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortR_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    GPIOPortS_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    Hibernate_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2C1_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2C2_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2C3_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2C4_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2C5_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    I2S0_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    LPC0_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    PECI0_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM0Generator3_Handler                   0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM1Fault_Handler                        0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM1Generator0_Handler                   0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM1Generator1_Handler                   0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM1Generator2_Handler                   0x000002d3   Thumb Code     0  startup.o(RESET)
+    PWM1Generator3_Handler                   0x000002d3   Thumb Code     0  startup.o(RESET)
+    Quadrature1_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    Quadrature2_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    SSI1_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    SSI2_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    SSI3_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer3A_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer3B_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer4A_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer4B_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer5A_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    Timer5B_Handler                          0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART2_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART3_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART4_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART5_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART6_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    UART7_Handler                            0x000002d3   Thumb Code     0  startup.o(RESET)
+    USB0_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer0A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer0B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer1A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer1B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer2A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer2B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer3A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer3B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer4A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer4B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer5A_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    WideTimer5B_Handler                      0x000002d3   Thumb Code     0  startup.o(RESET)
+    uDMA_Error                               0x000002d3   Thumb Code     0  startup.o(RESET)
+    uDMA_Handler                             0x000002d3   Thumb Code     0  startup.o(RESET)
+    __use_two_region_memory                  0x000002e5   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_escrow$2region                 0x000002e7   Thumb Code     2  heapauxi.o(.text)
+    __rt_heap_expand$2region                 0x000002e9   Thumb Code     2  heapauxi.o(.text)
+    InitSysTick                              0x000002ed   Thumb Code     0  systick.o(initisr)
+    get_rc                                   0x00000315   Thumb Code   124  deneme.o(part1)
+    get_row_col                              0x00000395   Thumb Code     0  get_column.o(part1)
+    screen                                   0x000004a5   Thumb Code     0  and_or.o(part1)
+    screenzero                               0x000004f1   Thumb Code     0  screenzero.o(part1)
+    newscreenzero                            0x0000051d   Thumb Code     0  newscreenzero.o(part1)
+    mines                                    0x00000545   Thumb Code   128  mine.o(part1)
+    get_row_col_mine                         0x000005c9   Thumb Code     0  get_row_col_mine.o(part1)
+    screen2                                  0x000006d9   Thumb Code     0  screen2.o(part1)
+    screen3                                  0x00000711   Thumb Code     0  screen3.o(part1)
+    buttons2                                 0x00000749   Thumb Code   192  buttons2.o(part1)
+    decision                                 0x00000811   Thumb Code     0  decision.o(part1)
+    initSSI                                  0x00000881   Thumb Code    94  initssi.o(subroutin)
+    initGPIO                                 0x000008f1   Thumb Code    82  initgpio.o(subroutin)
+    delayy                                   0x00000961   Thumb Code    14  delayy.o(subroutin)
+    sendDC                                   0x00000975   Thumb Code    34  senddc.o(subroutin)
+    fillzero                                 0x000009a1   Thumb Code    80  fillzero.o(subroutin)
+    __main                                   0x000009f5   Thumb Code     2  maincursor.o(subroutin)
+    buttons                                  0x00000bad   Thumb Code    32  buttonhandler.o(subroutin)
+    gpio_f                                   0x00000bd1   Thumb Code   118  gpio_f.o(subroutin)
+    civilian                                 0x00000c81   Thumb Code   140  civilian.o(subroutin)
+    battleship                               0x00000d11   Thumb Code     0  battleshipmult.o(subroutin)
+    battlescreen                             0x00000d91   Thumb Code     0  battlescreen.o(subroutin)
+    SysTick_Handler                          0x00000ddd   Thumb Code    42  systickhandler.o(subroutin)
+    timetable                                0x00000e11   Thumb Code  1548  timetable.o(subroutin)
+    P1_won                                   0x00001421   Thumb Code     0  p1_won.o(subroutin)
+    P2_won                                   0x00001541   Thumb Code     0  p2_won.o(subroutin)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x0000026d
+
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00001a74, Max: 0xffffffff, ABSOLUTE)
+
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00001674, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000000   0x00000000   0x000002e4   Code   RO           13  * RESET               startup.o
+    0x000002e4   0x000002e4   0x00000006   Code   RO          119    .text               c_w.l(heapauxi.o)
+    0x000002ea   0x000002ea   0x00000002   PAD
+    0x000002ec   0x000002ec   0x00000028   Code   RO           99    initisr             systick.o
+    0x00000314   0x00000314   0x00000080   Code   RO           35    part1               deneme.o
+    0x00000394   0x00000394   0x00000110   Code   RO           39    part1               get_column.o
+    0x000004a4   0x000004a4   0x0000004c   Code   RO           55    part1               and_or.o
+    0x000004f0   0x000004f0   0x0000002c   Code   RO           59    part1               screenzero.o
+    0x0000051c   0x0000051c   0x00000028   Code   RO           71    part1               newscreenzero.o
+    0x00000544   0x00000544   0x00000084   Code   RO           75    part1               mine.o
+    0x000005c8   0x000005c8   0x00000110   Code   RO           79    part1               get_row_col_mine.o
+    0x000006d8   0x000006d8   0x00000038   Code   RO           83    part1               screen2.o
+    0x00000710   0x00000710   0x00000038   Code   RO           87    part1               screen3.o
+    0x00000748   0x00000748   0x000000c8   Code   RO           91    part1               buttons2.o
+    0x00000810   0x00000810   0x00000070   Code   RO          107    part1               decision.o
+    0x00000880   0x00000880   0x00000070   Code   RO            1    subroutin           initssi.o
+    0x000008f0   0x000008f0   0x00000070   Code   RO            7    subroutin           initgpio.o
+    0x00000960   0x00000960   0x00000014   Code   RO           20    subroutin           delayy.o
+    0x00000974   0x00000974   0x0000002c   Code   RO           24    subroutin           senddc.o
+    0x000009a0   0x000009a0   0x00000054   Code   RO           28    subroutin           fillzero.o
+    0x000009f4   0x000009f4   0x000001b8   Code   RO           32    subroutin           maincursor.o
+    0x00000bac   0x00000bac   0x00000024   Code   RO           43    subroutin           buttonhandler.o
+    0x00000bd0   0x00000bd0   0x000000b0   Code   RO           47    subroutin           gpio_f.o
+    0x00000c80   0x00000c80   0x00000090   Code   RO           51    subroutin           civilian.o
+    0x00000d10   0x00000d10   0x00000080   Code   RO           63    subroutin           battleshipmult.o
+    0x00000d90   0x00000d90   0x0000004c   Code   RO           67    subroutin           battlescreen.o
+    0x00000ddc   0x00000ddc   0x00000034   Code   RO           95    subroutin           systickhandler.o
+    0x00000e10   0x00000e10   0x00000610   Code   RO          103    subroutin           timetable.o
+    0x00001420   0x00001420   0x00000120   Code   RO          111    subroutin           p1_won.o
+    0x00001540   0x00001540   0x00000134   Code   RO          114    subroutin           p2_won.o
+
+
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00001674, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000000   0x00001674   0x00000400   Data   RW           11    STACK               startup.o
+
+
+    Execution Region ER_ZI (Exec base: 0x20000400, Load base: 0x00001a74, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+        76         16          0          0          0        356   and_or.o
+        76          8          0          0          0        376   battlescreen.o
+       128          6          0          0          0        392   battleshipmult.o
+        36          4          0          0          0        364   buttonhandler.o
+       200          8          0          0          0        408   buttons2.o
+       144          4          0          0          0        388   civilian.o
+       112         12          0          0          0        372   decision.o
+        20          6          0          0          0        352   delayy.o
+       128          4          0          0          0        380   deneme.o
+        84          4          0          0          0        372   fillzero.o
+       272         58          0          0          0        436   get_column.o
+       272         58          0          0          0        444   get_row_col_mine.o
+       176         58          0          0          0        384   gpio_f.o
+       112         30          0          0          0        384   initgpio.o
+       112         18          0          0          0        420   initssi.o
+       440         36          0          0          0        340   maincursor.o
+       132          4          0          0          0        376   mine.o
+        40          6          0          0          0        360   newscreenzero.o
+       288          4          0          0          0        280   p1_won.o
+       308          4          0          0          0        284   p2_won.o
+        56         14          0          0          0        352   screen2.o
+        56         14          0          0          0        352   screen3.o
+        44          4          0          0          0        356   screenzero.o
+        44         10          0          0          0        360   senddc.o
+       740        636          0       1024          0        772   startup.o
+        40          8          0          0          0        356   systick.o
+        52         10          0          0          0        380   systickhandler.o
+      1552         22          0          0          0        788   timetable.o
+
+    ----------------------------------------------------------------------
+      5740       1066          0       1024          0      11184   Object Totals
+         0          0          0          0          0          0   (incl. Generated)
+         0          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         6          0          0          0          0        152   heapauxi.o
+
+    ----------------------------------------------------------------------
+         8          0          0          0          0        152   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+         6          0          0          0          0        152   c_w.l
+
+    ----------------------------------------------------------------------
+         8          0          0          0          0        152   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+      5748       1066          0       1024          0       8936   Grand Totals
+      5748       1066          0       1024          0       8936   ELF Image Totals
+      5748       1066          0       1024          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                 5748 (   5.61kB)
+    Total RW  Size (RW Data + ZI Data)              1024 (   1.00kB)
+    Total ROM Size (Code + RO Data + RW Data)       6772 (   6.61kB)
+
+==============================================================================
+

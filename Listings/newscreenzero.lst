@@ -1,0 +1,79 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             part1, CODE, READONLY
+    2 00000000                 THUMB
+    3 00000000         
+    4 00000000                 EXPORT           newscreenzero
+    5 00000000         
+    6 00000000         newscreenzero
+    7 00000000         
+    8 00000000         start   PROC
+    9 00000000 E92D 5FFF       PUSH             {R0-R12, LR}
+   10 00000004 F04F 0000       MOV              R0, #0x00
+   11 00000008 4B06            LDR              R3,=0x20001000 
+                                                            ; send to screen 
+   12 0000000A F04F 0840       MOV              R8, #0x40
+   13 0000000E F843 0B04 
+                       fill    STR              R0, [R3], #4 ; the memory place
+                                                             for zero screen is
+                                                             created (will be s
+                                                            ent while waiting f
+                                                            or 0.5 sec)
+   14 00000012 F1A8 0801       SUB              R8, #1
+   15 00000016 F1B8 0F00       CMP              R8, #0
+   16 0000001A D1F8            BNE              fill
+   17 0000001C E8BD 5FFF       POP              {R0-R12, LR}
+   18 00000020 4770            BX               LR
+   19 00000022                 ENDP
+                       
+              00 00 20001000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\newscreenzero.d -o.\objects\newscreenzero.o -I.\RTE\_
+Target_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\
+Keil_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VE
+RSION SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\newscreenze
+ro.lst newscreenzero.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+fill 0000000E
+
+Symbol: fill
+   Definitions
+      At line 13 in file newscreenzero.s
+   Uses
+      At line 16 in file newscreenzero.s
+Comment: fill used once
+newscreenzero 00000000
+
+Symbol: newscreenzero
+   Definitions
+      At line 6 in file newscreenzero.s
+   Uses
+      At line 4 in file newscreenzero.s
+Comment: newscreenzero used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 1 in file newscreenzero.s
+   Uses
+      None
+Comment: part1 unused
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 8 in file newscreenzero.s
+   Uses
+      None
+Comment: start unused
+4 symbols
+340 symbols in table

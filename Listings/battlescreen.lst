@@ -1,0 +1,119 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             subroutin, READONLY, CODE
+    2 00000000                 THUMB
+    3 00000000                 EXTERN           delayy
+    4 00000000                 EXTERN           screen
+    5 00000000                 EXPORT           battlescreen ; Make available,
+    6 00000000         
+    7 00000000         
+    8 00000000         
+    9 00000000         battlescreen
+                               PROC
+   10 00000000 E92D 5FFF       PUSH             {R0-R12,LR}
+   11 00000004         
+   12 00000004 480F            LDR              R0,= 0x20000900 ; cursor
+   13 00000006         
+   14 00000006 4B10            LDR              R3,= 0x20000600 ; will have the
+                                                             map of battleships
+                                                             together
+   15 00000008 F04F 0840       MOV              R8, #64
+   16 0000000C 6801    check   LDR              R1, [R0]
+   17 0000000E F500 7080       ADD              R0, #0x100
+   18 00000012 6802            LDR              R2, [R0]
+   19 00000014 F500 7080       ADD              R0, #0x100
+   20 00000018 6804            LDR              R4, [R0]
+   21 0000001A F500 7080       ADD              R0, #0x100
+   22 0000001E 6805            LDR              R5, [R0]
+   23 00000020 F5A0 7040       SUB              R0, #0x300
+   24 00000024 F100 0004       ADD              R0, #0x04
+   25 00000028 EA42 0701       ORR              R7, R2, R1
+   26 0000002C EA47 0704       ORR              R7, R4
+   27 00000030 EA47 0705       ORR              R7, R5
+   28 00000034 F843 7B04       STR              R7, [R3], #4
+   29 00000038 F1B8 0801       SUBS             R8, #1
+   30 0000003C D1E6            BNE              check
+   31 0000003E         ; the battleships are collected together to the space be
+                       tween 0x20000600-0x20000700
+   32 0000003E         
+   33 0000003E         abort_mission
+   34 0000003E         
+   35 0000003E         
+   36 0000003E E8BD 5FFF       POP              {R0-R12,LR}
+   37 00000042 4770            BX               LR
+                       
+              20000900 
+              20000600 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\battlescreen.d -o.\objects\battlescreen.o -I.\RTE\_Ta
+rget_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Ke
+il_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERS
+ION SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\battlescreen.
+lst battlescreen.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+abort_mission 0000003E
+
+Symbol: abort_mission
+   Definitions
+      At line 33 in file battlescreen.s
+   Uses
+      None
+Comment: abort_mission unused
+battlescreen 00000000
+
+Symbol: battlescreen
+   Definitions
+      At line 9 in file battlescreen.s
+   Uses
+      At line 5 in file battlescreen.s
+Comment: battlescreen used once
+check 0000000C
+
+Symbol: check
+   Definitions
+      At line 16 in file battlescreen.s
+   Uses
+      At line 30 in file battlescreen.s
+Comment: check used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 1 in file battlescreen.s
+   Uses
+      None
+Comment: subroutin unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 3 in file battlescreen.s
+   Uses
+      None
+Comment: delayy unused
+screen 00000000
+
+Symbol: screen
+   Definitions
+      At line 4 in file battlescreen.s
+   Uses
+      None
+Comment: screen unused
+2 symbols
+342 symbols in table

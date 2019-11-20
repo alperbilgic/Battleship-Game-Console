@@ -1,0 +1,62 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    2 00000000                 AREA             subroutin, READONLY, CODE
+    3 00000000                 THUMB
+    4 00000000         
+    5 00000000                 EXPORT           delayy      ; Make available
+    6 00000000         
+    7 00000000         delayy  PROC
+    8 00000000 B502            PUSH             {R1,LR}
+    9 00000002 4903            LDR              R1,=525000  ; count from 525000
+                                                             to 0
+   10 00000004 3901    Loop    SUBS             R1,#1
+   11 00000006 D1FD            BNE              Loop
+   12 00000008 E8BD 4002       POP              {R1,LR}
+   13 0000000C         
+   14 0000000C 4770            BX               LR
+   15 0000000E         
+   16 0000000E                 ENDP
+                       
+              00 00 000802C8 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\delayy.d -o.\objects\delayy.o -I.\RTE\_Target_1 -IC:\
+Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
+" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\delayy.lst Delayy.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Loop 00000004
+
+Symbol: Loop
+   Definitions
+      At line 10 in file Delayy.s
+   Uses
+      At line 11 in file Delayy.s
+Comment: Loop used once
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 7 in file Delayy.s
+   Uses
+      At line 5 in file Delayy.s
+Comment: delayy used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 2 in file Delayy.s
+   Uses
+      None
+Comment: subroutin unused
+3 symbols
+339 symbols in table

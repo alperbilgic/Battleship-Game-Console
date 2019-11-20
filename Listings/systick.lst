@@ -1,0 +1,164 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        *
+    2 00000000         ; Your SystemTimer . s s o u r c e f i l e t o implement
+                       
+    3 00000000         ; i n i t i a l i z a t i o n and ISR
+    4 00000000         ;* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        *
+    5 00000000         ; D e f i n i t i o n o f the l a b e s s t a n di n g f
+                        o r
+    6 00000000         ; the a d d r e s s o f the r e g i s t e r s
+    7 00000000 E000E010 
+                       NVIC_ST_CTRL
+                               EQU              0xE000E010
+    8 00000000 E000E014 
+                       NVIC_ST_RELOAD
+                               EQU              0xE000E014
+    9 00000000 E000E018 
+                       NVIC_ST_CURRENT
+                               EQU              0xE000E018
+   10 00000000 E000ED20 
+                       SHP_SYSPRI3
+                               EQU              0xE000ED20
+   11 00000000         ; end o f the r e g i s t e r l a b e l d e f i n i t i 
+                       o n s
+   12 00000000         ; 0x7D0 = 2000 -> 2000*250 ns = 500mus
+   13 00000000 00010000 
+                       RELOAD_VALUE
+                               EQU              0x00010000
+   14 00000000         ;* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        *
+   15 00000000         ; I n i t i a l i z a t i o n a r e a
+   16 00000000         ;* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        *
+   17 00000000         ;LABEL   DIRECTIVE   VALUE   COMMENT
+   18 00000000                 AREA             initisr , CODE, READONLY, ALIGN
+=2
+   19 00000000                 THUMB
+   20 00000000                 EXPORT           InitSysTick
+   21 00000000         InitSysTick
+                               PROC
+   22 00000000 B507            PUSH             {R1,R0,R2,LR}
+   23 00000002         
+   24 00000002 4807            LDR              R0, =NVIC_ST_CTRL ; SYSTICK con
+                                                            trol and status reg
+                                                            ister
+   25 00000004 F04F 0100       MOV              R1, #0
+   26 00000008 6001            STR              R1, [R0]    ; stop counter to p
+                                                            revent interrupt tr
+                                                            iggered accidentall
+                                                            y
+   27 0000000A 4906            LDR              R1, =0x003D0900 ; trigger every
+                                                             100000 cycles
+   28 0000000C 6041            STR              R1, [R0,#4] ; write reload valu
+                                                            e to reload value r
+                                                            egister
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   29 0000000E F04F 0201       MOV              R2, #1      ; first reload is 1
+                                                             since getting into
+                                                             the systick as sho
+                                                            rt as possible to p
+                                                            rint value of '20'
+   30 00000012 6082            STR              R2, [R0,#8] ; write any value t
+                                                            o current value
+   31 00000014 F04F 0103       MOV              R1, #0x3    ; enable interrupt,
+                                                             enable SYSTICK cou
+                                                            nter
+   32 00000018 6001            STR              R1, [R0]    ; start counter
+   33 0000001A         
+   34 0000001A E8BD 4007       POP              {R1,R0,R2,LR}
+   35 0000001E 4770            BX               LR
+                       
+              E000E010 
+              003D0900 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\systick.d -o.\objects\systick.o -I.\RTE\_Target_1 -IC
+:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\
+CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 5
+26" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\systick.lst systick.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+InitSysTick 00000000
+
+Symbol: InitSysTick
+   Definitions
+      At line 21 in file systick.s
+   Uses
+      At line 20 in file systick.s
+Comment: InitSysTick used once
+initisr 00000000
+
+Symbol: initisr
+   Definitions
+      At line 18 in file systick.s
+   Uses
+      None
+Comment: initisr unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+NVIC_ST_CTRL E000E010
+
+Symbol: NVIC_ST_CTRL
+   Definitions
+      At line 7 in file systick.s
+   Uses
+      At line 24 in file systick.s
+Comment: NVIC_ST_CTRL used once
+NVIC_ST_CURRENT E000E018
+
+Symbol: NVIC_ST_CURRENT
+   Definitions
+      At line 9 in file systick.s
+   Uses
+      None
+Comment: NVIC_ST_CURRENT unused
+NVIC_ST_RELOAD E000E014
+
+Symbol: NVIC_ST_RELOAD
+   Definitions
+      At line 8 in file systick.s
+   Uses
+      None
+Comment: NVIC_ST_RELOAD unused
+RELOAD_VALUE 00010000
+
+Symbol: RELOAD_VALUE
+   Definitions
+      At line 13 in file systick.s
+   Uses
+      None
+Comment: RELOAD_VALUE unused
+SHP_SYSPRI3 E000ED20
+
+Symbol: SHP_SYSPRI3
+   Definitions
+      At line 10 in file systick.s
+   Uses
+      None
+Comment: SHP_SYSPRI3 unused
+5 symbols
+343 symbols in table

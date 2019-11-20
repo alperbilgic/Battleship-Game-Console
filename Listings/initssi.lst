@@ -1,0 +1,195 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400FE61C 
+                       RCGCSSI EQU              0x400FE61C
+    2 00000000 40008000 
+                       SSI0_CR0
+                               EQU              0x40008000
+    3 00000000 40008004 
+                       SSI0_CR1
+                               EQU              0x40008004
+    4 00000000 40008010 
+                       SSI0_CPSR
+                               EQU              0x40008010
+    5 00000000 000000C7 
+                       SELO    EQU              0x00C7
+    6 00000000 400FE104 
+                       RCGC1   EQU              0x400FE104
+    7 00000000 400FE108 
+                       RCGC2   EQU              0x400FE108
+    8 00000000         
+    9 00000000         
+   10 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+   11 00000000                 AREA             subroutin, READONLY, CODE
+   12 00000000                 THUMB
+   13 00000000         
+   14 00000000                 EXPORT           initSSI     ; Make available
+   15 00000000         
+   16 00000000         initSSI PROC
+   17 00000000         
+   18 00000000 B417            PUSH             {R1,R0,R4,R2}
+   19 00000002         
+   20 00000002 4817            LDR              R0,=RCGCSSI
+   21 00000004 6801            LDR              R1,[R0]
+   22 00000006 F041 0101       ORR              R1,#0x01    ; 
+   23 0000000A 6001            STR              R1,[R0]     ; 
+   24 0000000C BF00            NOP
+   25 0000000E BF00            NOP
+   26 00000010 BF00            NOP
+   27 00000012 BF00            NOP
+   28 00000014 BF00            NOP
+   29 00000016 BF00            NOP
+   30 00000018 BF00            NOP
+   31 0000001A BF00            NOP
+   32 0000001C BF00            NOP
+   33 0000001E BF00            NOP
+   34 00000020 BF00            NOP
+   35 00000022 BF00            NOP
+   36 00000024 BF00            NOP
+   37 00000026         ; PRSSI SHOULD HAVE BEEN CHECKED BUT THIS AMOUNT OF NOP 
+                       OPERATIONS ARE PRETTY SUFFICIENT TO
+   38 00000026         ; ENSURE THAT THE SSI PERIPHERAL IS READY
+   39 00000026         
+   40 00000026 490F            LDR              R1,=SSI0_CR1 ; 
+   41 00000028 6808            LDR              R0,[ R1 ]
+   42 0000002A F020 0006       BIC              R0,#0x06    ; SSI OPERATION IS 
+                                                            DISABLED
+   43 0000002E 6008            STR              R0,[ R1 ]   ; CONFIGURATION OF 
+                                                            PORT B ENDS
+   44 00000030         
+   45 00000030         
+   46 00000030         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   47 00000030 480D            LDR              R0,=SSI0_CPSR
+   48 00000032 6801            LDR              R1,[R0]
+   49 00000034 F001 0100       AND              R1,R1,#0x00 ; FREQUENCY WILL BE
+                                                             DECIDED
+   50 00000038 F041 0110       ORR              R1,R1,#0x10 ; PRESCALE IS GIVEN
+                                                             AS 24
+   51 0000003C 6001            STR              R1,[R0]
+   52 0000003E         
+   53 0000003E 490B            LDR              R1,=SSI0_CR0 ; 
+   54 00000040 6808            LDR              R0,[ R1 ]
+   55 00000042 F000 0000       AND              R0,#0x0
+   56 00000046 F04F 02C7       LDR              R2,=SELO
+   57 0000004A EA40 0002       ORR              R0,R2       ;   
+   58 0000004E 6008            STR              R0,[ R1 ]
+   59 00000050         
+   60 00000050 4904            LDR              R1,=SSI0_CR1 ;
+   61 00000052 6808            LDR              R0, [R1]
+   62 00000054 F040 0002       ORR              R0, #0x02   ; SSI OPERATION ENA
+                                                            BLED AGAIN
+   63 00000058 6008            STR              R0, [R1]
+   64 0000005A         
+   65 0000005A         
+   66 0000005A BC17            POP              {R1,R0,R4,R2}
+   67 0000005C         
+   68 0000005C 4770            BX               LR
+   69 0000005E                 ENDP
+                       
+              00 00 400FE61C 
+              40008004 
+              40008010 
+              40008000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\initssi.d -o.\objects\initssi.o -I.\RTE\_Target_1 -IC
+:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\
+CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 5
+26" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\initssi.lst initSSI.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+initSSI 00000000
+
+Symbol: initSSI
+   Definitions
+      At line 16 in file initSSI.s
+   Uses
+      At line 14 in file initSSI.s
+Comment: initSSI used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 11 in file initSSI.s
+   Uses
+      None
+Comment: subroutin unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+RCGC1 400FE104
+
+Symbol: RCGC1
+   Definitions
+      At line 6 in file initSSI.s
+   Uses
+      None
+Comment: RCGC1 unused
+RCGC2 400FE108
+
+Symbol: RCGC2
+   Definitions
+      At line 7 in file initSSI.s
+   Uses
+      None
+Comment: RCGC2 unused
+RCGCSSI 400FE61C
+
+Symbol: RCGCSSI
+   Definitions
+      At line 1 in file initSSI.s
+   Uses
+      At line 20 in file initSSI.s
+Comment: RCGCSSI used once
+SELO 000000C7
+
+Symbol: SELO
+   Definitions
+      At line 5 in file initSSI.s
+   Uses
+      At line 56 in file initSSI.s
+Comment: SELO used once
+SSI0_CPSR 40008010
+
+Symbol: SSI0_CPSR
+   Definitions
+      At line 4 in file initSSI.s
+   Uses
+      At line 47 in file initSSI.s
+Comment: SSI0_CPSR used once
+SSI0_CR0 40008000
+
+Symbol: SSI0_CR0
+   Definitions
+      At line 2 in file initSSI.s
+   Uses
+      At line 53 in file initSSI.s
+Comment: SSI0_CR0 used once
+SSI0_CR1 40008004
+
+Symbol: SSI0_CR1
+   Definitions
+      At line 3 in file initSSI.s
+   Uses
+      At line 40 in file initSSI.s
+      At line 60 in file initSSI.s
+
+7 symbols
+345 symbols in table

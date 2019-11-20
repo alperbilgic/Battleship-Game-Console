@@ -1,0 +1,104 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000                 AREA             part1, CODE, READONLY
+    4 00000000                 THUMB
+    5 00000000         
+    6 00000000                 EXPORT           screen
+    7 00000000         
+    8 00000000         screen
+    9 00000000         
+   10 00000000         start   PROC
+   11 00000000 E92D 5FFF       PUSH             { R0-R12, LR}
+   12 00000004 480D            LDR              R0,= 0x20000500 ; cursor
+   13 00000006 490E            LDR              R1,= 0x20000600 ; battleship
+   14 00000008 4A0E            LDR              R2,= 0x20000700 ; civilian
+   15 0000000A 4B0F            LDR              R3,= 0x20000800 
+                                                            ; send to screen 
+   16 0000000C F04F 0840       MOV              R8, #64
+   17 00000010 F850 4B04 
+                       check   LDR              R4, [R0], #4
+   18 00000014 F851 5B04       LDR              R5, [R1], #4
+   19 00000018 F852 6B04       LDR              R6, [R2], #4
+   20 0000001C EA05 0704       AND              R7, R5, R4
+   21 00000020 4037            ANDS             R7, R6      ; the AND parts are
+                                                             written for bonus 
+                                                            part which is not a
+                                                            chieved:)
+   22 00000022 D108            BNE              abort_mission
+   23 00000024 EA45 0704       ORR              R7, R5, R4  ; the ships and cur
+                                                            sor are ORR'ed to l
+                                                            et the screen conta
+                                                            in all
+   24 00000028 EA47 0706       ORR              R7, R6
+   25 0000002C F843 7B04       STR              R7, [R3], #4
+   26 00000030 F1B8 0801       SUBS             R8, #1
+   27 00000034 D1EC            BNE              check
+   28 00000036         ; print the memory starting with 0x20000800 to the scree
+                       n
+   29 00000036         abort_mission
+   30 00000036 E8BD 5FFF       POP              {R0-R12, LR}
+   31 0000003A 4770            BX               LR
+   32 0000003C                 END
+              20000500 
+              20000600 
+              20000700 
+              20000800 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\and_or.d -o.\objects\and_or.o -I.\RTE\_Target_1 -IC:\
+Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
+" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\and_or.lst and_or.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+abort_mission 00000036
+
+Symbol: abort_mission
+   Definitions
+      At line 29 in file and_or.s
+   Uses
+      At line 22 in file and_or.s
+Comment: abort_mission used once
+check 00000010
+
+Symbol: check
+   Definitions
+      At line 17 in file and_or.s
+   Uses
+      At line 27 in file and_or.s
+Comment: check used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 3 in file and_or.s
+   Uses
+      None
+Comment: part1 unused
+screen 00000000
+
+Symbol: screen
+   Definitions
+      At line 8 in file and_or.s
+   Uses
+      At line 6 in file and_or.s
+Comment: screen used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 10 in file and_or.s
+   Uses
+      None
+Comment: start unused
+5 symbols
+341 symbols in table

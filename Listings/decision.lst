@@ -1,0 +1,235 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 20000E00 
+                       mine    EQU              0x20000E00
+    2 00000000 20000700 
+                       civilian
+                               EQU              0x20000700
+    3 00000000 20000000 
+                       battle_sayisi
+                               EQU              0x20000000
+    4 00000000 20000900 
+                       battle_1
+                               EQU              0x20000900
+    5 00000000         
+    6 00000000         
+    7 00000000                 AREA             part1, CODE, READONLY
+    8 00000000                 THUMB
+    9 00000000                 EXTERN           P1_won
+   10 00000000                 EXTERN           P2_won
+   11 00000000                 EXPORT           decision
+   12 00000000         decision
+   13 00000000         
+   14 00000000         start   PROC
+   15 00000000         
+   16 00000000 E92D 5FFF       PUSH             {R0-R12,LR}
+   17 00000004 F04F 0940       MOV              R9,#64
+   18 00000008 4816            LDR              R0,= mine
+   19 0000000A 4A17            LDR              R2, = civilian
+   20 0000000C F04F 5400       LDR              R4,= battle_sayisi
+   21 00000010 6825            LDR              R5, [R4]
+   22 00000012         
+   23 00000012 F850 1B04 
+                       civ     LDR              R1, [R0], #4 ; this part contro
+                                                            ls if a civilian sh
+                                                            ip got hit
+   24 00000016 F852 3B04       LDR              R3, [R2], #4 ; R1 is not 0 if t
+                                                            here is a mine and 
+                                                            R3 is non zero if t
+                                                            here is a civilian
+   25 0000001A EA01 0103       AND              R1, R3      ; if AND value is d
+                                                            ifferent from '0' a
+                                                             civilian is hit
+   26 0000001E 2900            CMP              R1, #0
+   27 00000020 F47F AFFE       BNE              P1_won
+   28 00000024 F1B9 0901       SUBS             R9,#1
+   29 00000028 D1F3            BNE              civ
+   30 0000002A         ; below part controls if all battle ships are hit
+   31 0000002A         ; that is why the code turns for number of battleship ti
+                       mes
+   32 0000002A 480E            LDR              R0,= mine   ; the address value
+                                                             of start of mine s
+                                                            pace
+   33 0000002C 4A0F            LDR              R2, = battle_1 ; the address va
+                                                            lue of start point 
+                                                            of the first battle
+                                                             ship
+   34 0000002E F04F 0940 
+                       battle_n
+                               MOV              R9,#64      ; since values are 
+                                                            increased for 64 ti
+                                                            mes the address of 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            next battleship mem
+                                                            ory is gotten autom
+                                                            atically
+   35 00000032 F04F 0A00       MOV              R10, #0
+   36 00000036 F850 1B04 
+                       battle  LDR              R1, [R0], #4 ; the battleship a
+                                                            reas are and'ed wit
+                                                            h mines
+   37 0000003A F852 3B04       LDR              R3, [R2], #4
+   38 0000003E EA01 0103       AND              R1,R3
+   39 00000042 2900            CMP              R1, #0
+   40 00000044 BF18 F04F 
+              0A01             MOVNE            R10,#1      ; R10 is the flag w
+                                                            hich shows if the s
+                                                            hip in the controll
+                                                            ed area got hit
+   41 0000004A F1B9 0901       SUBS             R9,#1
+   42 0000004E D1F2            BNE              battle
+   43 00000050         
+   44 00000050 F1BA 0F00       CMP              R10,#0      ; if R10 is '0' aft
+                                                            er controlling all 
+                                                            areas player 1 is t
+                                                            he winner
+   45 00000054 F43F AFFE       BEQ              P1_won
+   46 00000058 3D01            SUBS             R5, #1
+   47 0000005A D1E8            BNE              battle_n
+   48 0000005C         
+   49 0000005C F7FF BFFE       B                P2_won      ; if player 1 is no
+                                                            t assigned as the w
+                                                            inner than the seco
+                                                            nd player is the wi
+                                                            nner
+   50 00000060         
+   51 00000060 E8BD 5FFF       POP              {R0-R12,LR}
+   52 00000064                 END
+              20000E00 
+              20000700 
+              20000900 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\decision.d -o.\objects\decision.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\decision.lst decision
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+battle 00000036
+
+Symbol: battle
+   Definitions
+      At line 36 in file decision.s
+   Uses
+      At line 42 in file decision.s
+Comment: battle used once
+battle_n 0000002E
+
+Symbol: battle_n
+   Definitions
+      At line 34 in file decision.s
+   Uses
+      At line 47 in file decision.s
+Comment: battle_n used once
+civ 00000012
+
+Symbol: civ
+   Definitions
+      At line 23 in file decision.s
+   Uses
+      At line 29 in file decision.s
+Comment: civ used once
+decision 00000000
+
+Symbol: decision
+   Definitions
+      At line 12 in file decision.s
+   Uses
+      At line 11 in file decision.s
+Comment: decision used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 7 in file decision.s
+   Uses
+      None
+Comment: part1 unused
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 14 in file decision.s
+   Uses
+      None
+Comment: start unused
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+battle_1 20000900
+
+Symbol: battle_1
+   Definitions
+      At line 4 in file decision.s
+   Uses
+      At line 33 in file decision.s
+Comment: battle_1 used once
+battle_sayisi 20000000
+
+Symbol: battle_sayisi
+   Definitions
+      At line 3 in file decision.s
+   Uses
+      At line 20 in file decision.s
+Comment: battle_sayisi used once
+civilian 20000700
+
+Symbol: civilian
+   Definitions
+      At line 2 in file decision.s
+   Uses
+      At line 19 in file decision.s
+Comment: civilian used once
+mine 20000E00
+
+Symbol: mine
+   Definitions
+      At line 1 in file decision.s
+   Uses
+      At line 18 in file decision.s
+      At line 32 in file decision.s
+
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+P1_won 00000000
+
+Symbol: P1_won
+   Definitions
+      At line 9 in file decision.s
+   Uses
+      At line 27 in file decision.s
+      At line 45 in file decision.s
+
+P2_won 00000000
+
+Symbol: P2_won
+   Definitions
+      At line 10 in file decision.s
+   Uses
+      At line 49 in file decision.s
+Comment: P2_won used once
+2 symbols
+348 symbols in table

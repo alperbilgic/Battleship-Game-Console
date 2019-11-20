@@ -1,0 +1,187 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             subroutin, READONLY, CODE
+    2 00000000                 THUMB
+    3 00000000                 EXTERN           delayy
+    4 00000000                 EXTERN           screen
+    5 00000000                 EXTERN           battlescreen
+    6 00000000                 EXPORT           battleship  ; Make available,
+    7 00000000         
+    8 00000000         
+    9 00000000         
+   10 00000000         battleship
+                               PROC
+   11 00000000 E92D 5FFF       PUSH             {R0-R12,LR}
+   12 00000004         
+   13 00000004 F04F 5100       LDR              R1,=0x20000000
+   14 00000008 6808            LDR              R0, [R1]    ; R0 has the number
+                                                             of battle ships pl
+                                                            aced on screen
+   15 0000000A         
+   16 0000000A         
+   17 0000000A 4C1C            LDR              R4,=0x20000900
+   18 0000000C F44F 7380       MOV              R3, #0x100  ; R3 gives the shif
+                                                            t value to the memo
+                                                            ry place of battles
+                                                            hips
+   19 00000010 FB00 F003       MUL              R0, R3      ; if there are mult
+                                                            iple battle ships t
+                                                            hey are placed sepe
+                                                            rately to determine
+                                                             the winner
+   20 00000014 4404            ADD              R4, R0
+   21 00000016         
+   22 00000016 FBB0 F0F3       UDIV             R0, R3      ; 
+   23 0000001A F100 0001       ADD              R0, #1
+   24 0000001E F841 0B04       STR              R0, [R1], #4
+   25 00000022         
+   26 00000022 F04F 0500       MOV              R5,#0
+   27 00000026 F1AA 0602       SUB              R6,R10,#2   ; column-2 
+   28 0000002A F1A9 0702       SUB              R7, R9, #2  ; row-2
+   29 0000002E         
+   30 0000002E 42B5    st      CMP              R5, R6      ; column place is g
+                                                            otten by going word
+                                                             by word
+   31 00000030 D114            BNE              loop
+   32 00000032         
+   33 00000032 F04F 081F       LDR              R8,=0x0000001F
+   34 00000036 2F00    shift2  CMP              R7,#0       ; battleships are p
+                                                            laces according to 
+                                                            row and column data
+                                                            
+   35 00000038 D004            BEQ              go          ; rows are gotten b
+                                                            y shifting the desi
+                                                            red shape with the 
+                                                            value
+   36 0000003A EA4F 0848       LSL              R8,#1
+   37 0000003E F1A7 0701       SUB              R7,#1
+   38 00000042 E7F8            B                shift2
+   39 00000044 F844 8B04 
+                       go      STR              R8, [R4], #4 ; the desired shap
+                                                            e is given to the s
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            hip
+   40 00000048 F844 8B04       STR              R8, [R4], #4
+   41 0000004C F8C4 8004       STR              R8, [R4,#4]
+   42 00000050 F8C4 8008       STR              R8, [R4,#8]
+   43 00000054 F844 8B0C       STR              R8, [R4], #12
+   44 00000058 F105 0505       ADD              R5, #5
+   45 0000005C F04F 0800 
+                       loop    LDR              R8,= 0x00000000
+   46 00000060 F844 8B04       STR              R8, [R4], #4 ; the places diffe
+                                                            rent than the ship 
+                                                            are stored as zeros
+                                                            
+   47 00000064 F105 0501       ADD              R5, #1
+   48 00000068 2D40            CMP              R5, #64
+   49 0000006A D1E0            BNE              st
+   50 0000006C F7FF FFFE       BL               battlescreen
+   51 00000070 F7FF FFFE       BL               screen
+   52 00000074 E8BD 5FFF       POP              {R0-R12,LR}
+   53 00000078 4770            BX               LR
+   54 0000007A         
+   55 0000007A         
+                       
+              00 00 20000900 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\battleshipmult.d -o.\objects\battleshipmult.o -I.\RTE
+\_Target_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC
+:\Keil_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_
+VERSION SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\battleshi
+pmult.lst battleshipmult.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+battleship 00000000
+
+Symbol: battleship
+   Definitions
+      At line 10 in file battleshipmult.s
+   Uses
+      At line 6 in file battleshipmult.s
+Comment: battleship used once
+go 00000044
+
+Symbol: go
+   Definitions
+      At line 39 in file battleshipmult.s
+   Uses
+      At line 35 in file battleshipmult.s
+Comment: go used once
+loop 0000005C
+
+Symbol: loop
+   Definitions
+      At line 45 in file battleshipmult.s
+   Uses
+      At line 31 in file battleshipmult.s
+Comment: loop used once
+shift2 00000036
+
+Symbol: shift2
+   Definitions
+      At line 34 in file battleshipmult.s
+   Uses
+      At line 38 in file battleshipmult.s
+Comment: shift2 used once
+st 0000002E
+
+Symbol: st
+   Definitions
+      At line 30 in file battleshipmult.s
+   Uses
+      At line 49 in file battleshipmult.s
+Comment: st used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 1 in file battleshipmult.s
+   Uses
+      None
+Comment: subroutin unused
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+battlescreen 00000000
+
+Symbol: battlescreen
+   Definitions
+      At line 5 in file battleshipmult.s
+   Uses
+      At line 50 in file battleshipmult.s
+Comment: battlescreen used once
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 3 in file battleshipmult.s
+   Uses
+      None
+Comment: delayy unused
+screen 00000000
+
+Symbol: screen
+   Definitions
+      At line 4 in file battleshipmult.s
+   Uses
+      At line 51 in file battleshipmult.s
+Comment: screen used once
+3 symbols
+345 symbols in table

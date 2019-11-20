@@ -1,0 +1,88 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000                 AREA             part1, CODE, READONLY
+    4 00000000                 THUMB
+    5 00000000         
+    6 00000000                 EXPORT           screen3
+    7 00000000         
+    8 00000000         screen3
+    9 00000000         
+   10 00000000         start   PROC
+   11 00000000 E92D 5FFF       PUSH             { R0-R12, LR}
+   12 00000004         
+   13 00000004 4909            LDR              R1,= 0x20000600 ; battleship
+   14 00000006 4A0A            LDR              R2,= 0x20000700 ; civilian
+   15 00000008 4B0A            LDR              R3,= 0x20000800 
+                                                            ; send to screen 
+   16 0000000A F04F 0840       MOV              R8, #64
+   17 0000000E         check
+   18 0000000E F851 5B04       LDR              R5, [R1], #4 ; the screen to be
+                                                             sent for 0.5 sec i
+                                                            s gotten by combini
+                                                            ng data of all ship
+                                                            s
+   19 00000012 F852 6B04       LDR              R6, [R2], #4
+   20 00000016 EA45 0706       ORR              R7, R5, R6
+   21 0000001A F843 7B04       STR              R7, [R3], #4
+   22 0000001E F1B8 0801       SUBS             R8, #1
+   23 00000022 D1F4            BNE              check
+   24 00000024         ; print the memory starting with 0x20000800 to the scree
+                       n
+   25 00000024         
+   26 00000024 E8BD 5FFF       POP              {R0-R12, LR}
+   27 00000028 4770            BX               LR
+   28 0000002A                 END
+              00 00 20000600 
+              20000700 
+              20000800 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\screen3.d -o.\objects\screen3.o -I.\RTE\_Target_1 -IC
+:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\
+CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 5
+26" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\screen3.lst screen3.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+check 0000000E
+
+Symbol: check
+   Definitions
+      At line 17 in file screen3.s
+   Uses
+      At line 23 in file screen3.s
+Comment: check used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 3 in file screen3.s
+   Uses
+      None
+Comment: part1 unused
+screen3 00000000
+
+Symbol: screen3
+   Definitions
+      At line 8 in file screen3.s
+   Uses
+      At line 6 in file screen3.s
+Comment: screen3 used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 10 in file screen3.s
+   Uses
+      None
+Comment: start unused
+4 symbols
+340 symbols in table

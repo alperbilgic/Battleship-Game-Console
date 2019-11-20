@@ -1,0 +1,81 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             part1, CODE, READONLY
+    2 00000000                 THUMB
+    3 00000000         
+    4 00000000                 EXPORT           screenzero
+    5 00000000         
+    6 00000000         screenzero
+    7 00000000         
+    8 00000000         start   PROC
+    9 00000000 E92D 5FFF       PUSH             {R0-R12, LR}
+   10 00000004 F04F 0000       MOV              R0, #0
+   11 00000008 F04F 5300       LDR              R3,=0x20000000
+   12 0000000C 6018            STR              R0, [R3]
+   13 0000000E 4B06            LDR              R3,=0x20000500 
+                                                            ; send to screen 
+   14 00000010 F44F 6880       MOV              R8, #0x400
+   15 00000014 F843 0B04 
+                       fill    STR              R0, [R3], #4 ; the memory place
+                                                            s that are used to 
+                                                            place ships and cur
+                                                            sors are loaded wit
+                                                            h zeros first
+   16 00000018 F1A8 0801       SUB              R8, #1
+   17 0000001C F1B8 0F00       CMP              R8, #0
+   18 00000020 D1F8            BNE              fill
+   19 00000022 E8BD 5FFF       POP              {R0-R12, LR}
+   20 00000026 4770            BX               LR
+   21 00000028                 ENDP
+                       
+              20000500 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\screenzero.d -o.\objects\screenzero.o -I.\RTE\_Target
+_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v
+5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION 
+SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\screenzero.lst sc
+reenzero.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+fill 00000014
+
+Symbol: fill
+   Definitions
+      At line 15 in file screenzero.s
+   Uses
+      At line 18 in file screenzero.s
+Comment: fill used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 1 in file screenzero.s
+   Uses
+      None
+Comment: part1 unused
+screenzero 00000000
+
+Symbol: screenzero
+   Definitions
+      At line 6 in file screenzero.s
+   Uses
+      At line 4 in file screenzero.s
+Comment: screenzero used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 8 in file screenzero.s
+   Uses
+      None
+Comment: start unused
+4 symbols
+340 symbols in table
