@@ -1,0 +1,246 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 20000D00 
+                       mines_address
+                               EQU              0x20000D00
+    2 00000000         
+    3 00000000         
+    4 00000000         
+    5 00000000                 AREA             part1, CODE, READONLY
+    6 00000000                 THUMB
+    7 00000000                 EXTERN           get_row_col_mine
+    8 00000000                 EXPORT           mines
+    9 00000000         
+   10 00000000         
+   11 00000000         mines   PROC
+   12 00000000 E92D 41FF       PUSH             {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   13 00000004 F7FF FFFE 
+                       get_rc  BL               get_row_col_mine
+   14 00000008 454A    check_row
+                               CMP              R2,R9       ; R9 is previous ro
+                                                            w
+   15 0000000A D101            BNE              start
+   16 0000000C 4553    check_col
+                               CMP              R3, R10     ; R10 is previous c
+                                                            olumn
+   17 0000000E D0F9            BEQ              get_rc
+   18 00000010         start
+   19 00000010 4C1B            LDR              R4,= mines_address
+   20 00000012 F04F 0500       MOV              R5,#0
+   21 00000016         
+   22 00000016         ;SUB R6,R3,#2; column-2
+   23 00000016         ;SUB R7, R2, #2; row-2
+   24 00000016 4691            MOV              R9, R2
+   25 00000018 469A            MOV              R10,R3      ; the row and colum
+                                                            n values are gotten
+                                                            
+   26 0000001A         
+   27 0000001A 429D    st      CMP              R5, R3
+   28 0000001C D124            BNE              loop
+   29 0000001E F04F 487F       LDR              R8, = 0xFF000000
+   30 00000022 2A00    shift   CMP              R2,#0       ; row place is gott
+                                                            en by shifting the 
+                                                            desired shape value
+                                                             for value of the r
+                                                            ow times
+   31 00000024 D004            BEQ              continue
+   32 00000026 EA4F 0858       LSR              R8,#1
+   33 0000002A F1A2 0201       SUB              R2,#1
+   34 0000002E E7F8            B                shift
+   35 00000030 464A    continue
+                               MOV              R2, R9      ; the desired shape
+                                                             is gotten from her
+                                                            e
+   36 00000032 F844 8B04       STR              R8, [R4], #4
+   37 00000036 F8C4 800C       STR              R8, [R4,#12]
+   38 0000003A F04F 4819       LDR              R8,=0x99000000
+   39 0000003E 2A00    shift2  CMP              R2,#0
+   40 00000040 D004            BEQ              go
+   41 00000042 EA4F 0858       LSR              R8,#1
+   42 00000046 F1A2 0201       SUB              R2,#1
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   43 0000004A E7F8            B                shift2
+   44 0000004C F844 8B04 
+                       go      STR              R8, [R4],#4
+   45 00000050 F844 8B04       STR              R8, [R4],#4
+   46 00000054 F844 8B04       STR              R8, [R4],#4
+   47 00000058 F844 8B04       STR              R8, [R4],#4
+   48 0000005C F844 8B04       STR              R8, [R4],#4
+   49 00000060 F844 8B08       STR              R8, [R4],#8
+   50 00000064 F105 0508       ADD              R5, #8
+   51 00000068 2D41    loop    CMP              R5, #65     ; zeros are placed 
+                                                            for other places
+   52 0000006A D006            BEQ              endd
+   53 0000006C F04F 0800       LDR              R8,= 0x00000000
+   54 00000070 F844 8B04       STR              R8, [R4], #4
+   55 00000074 F105 0501       ADD              R5, #1
+   56 00000078 E7CF            B                st
+   57 0000007A         endd
+   58 0000007A E8BD 41FF       POP              {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   59 0000007E 4770            BX               LR
+   60 00000080                 END
+              20000D00 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\mine.d -o.\objects\mine.o -I.\RTE\_Target_1 -IC:\Keil
+_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CMSIS\
+Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --
+predefine="TM4C123GH6PM SETA 1" --list=.\listings\mine.lst mine.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+check_col 0000000C
+
+Symbol: check_col
+   Definitions
+      At line 16 in file mine.s
+   Uses
+      None
+Comment: check_col unused
+check_row 00000008
+
+Symbol: check_row
+   Definitions
+      At line 14 in file mine.s
+   Uses
+      None
+Comment: check_row unused
+continue 00000030
+
+Symbol: continue
+   Definitions
+      At line 35 in file mine.s
+   Uses
+      At line 31 in file mine.s
+Comment: continue used once
+endd 0000007A
+
+Symbol: endd
+   Definitions
+      At line 57 in file mine.s
+   Uses
+      At line 52 in file mine.s
+Comment: endd used once
+get_rc 00000004
+
+Symbol: get_rc
+   Definitions
+      At line 13 in file mine.s
+   Uses
+      At line 17 in file mine.s
+Comment: get_rc used once
+go 0000004C
+
+Symbol: go
+   Definitions
+      At line 44 in file mine.s
+   Uses
+      At line 40 in file mine.s
+Comment: go used once
+loop 00000068
+
+Symbol: loop
+   Definitions
+      At line 51 in file mine.s
+   Uses
+      At line 28 in file mine.s
+Comment: loop used once
+mines 00000000
+
+Symbol: mines
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 11 in file mine.s
+   Uses
+      At line 8 in file mine.s
+Comment: mines used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 5 in file mine.s
+   Uses
+      None
+Comment: part1 unused
+shift 00000022
+
+Symbol: shift
+   Definitions
+      At line 30 in file mine.s
+   Uses
+      At line 34 in file mine.s
+Comment: shift used once
+shift2 0000003E
+
+Symbol: shift2
+   Definitions
+      At line 39 in file mine.s
+   Uses
+      At line 43 in file mine.s
+Comment: shift2 used once
+st 0000001A
+
+Symbol: st
+   Definitions
+      At line 27 in file mine.s
+   Uses
+      At line 56 in file mine.s
+Comment: st used once
+start 00000010
+
+Symbol: start
+   Definitions
+      At line 18 in file mine.s
+   Uses
+      At line 15 in file mine.s
+Comment: start used once
+13 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+mines_address 20000D00
+
+Symbol: mines_address
+   Definitions
+      At line 1 in file mine.s
+   Uses
+      At line 19 in file mine.s
+Comment: mines_address used once
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+get_row_col_mine 00000000
+
+Symbol: get_row_col_mine
+   Definitions
+      At line 7 in file mine.s
+   Uses
+      At line 13 in file mine.s
+Comment: get_row_col_mine used once
+1 symbol
+351 symbols in table

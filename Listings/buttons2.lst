@@ -1,0 +1,278 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 20000E00 
+                       mines_address
+                               EQU              0x20000E00
+    2 00000000         
+    3 00000000         
+    4 00000000         
+    5 00000000                 AREA             part1, CODE, READONLY
+    6 00000000                 THUMB
+    7 00000000                 EXTERN           get_row_col_mine
+    8 00000000                 EXPORT           buttons2
+    9 00000000         
+   10 00000000         
+   11 00000000         buttons2
+                               PROC
+   12 00000000 E92D 41FF       PUSH             {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   13 00000004         
+   14 00000004 482E            LDR              R0, =0x2000000C
+   15 00000006 6801            LDR              R1, [R0]
+   16 00000008 F101 0101       ADD              R1, #1
+   17 0000000C 6001            STR              R1, [R0]
+   18 0000000E         ; if player 2 is playing and button is pressed
+   19 0000000E F7FF FFFE 
+                       get_rc  BL               get_row_col_mine ; get the valu
+                                                            es for rows and col
+                                                            umns
+   20 00000012 454A    check_row
+                               CMP              R2,R9       ; R9 is previous ro
+                                                            w
+   21 00000014 D101            BNE              start
+   22 00000016 4553    check_col
+                               CMP              R3, R10     ; R10 is previous c
+                                                            olumn
+   23 00000018 D0F9            BEQ              get_rc
+   24 0000001A         start
+   25 0000001A 4C2A            LDR              R4,= mines_address ; mines will
+                                                             be placed to space
+                                                             starting with this
+                                                             value
+   26 0000001C F04F 0500       MOV              R5,#0
+   27 00000020         
+   28 00000020         
+   29 00000020 4691            MOV              R9, R2      ; 
+   30 00000022 469A            MOV              R10,R3      ; columns value is 
+                                                            gotten and the desi
+                                                            red column is gotte
+                                                            n by passing the va
+                                                            lues till 
+   31 00000024         ; this value is gotten
+   32 00000024         
+   33 00000024 429D    st      CMP              R5, R3
+   34 00000026 D13C            BNE              loop
+   35 00000028 F04F 487F       LDR              R8, = 0xFF000000
+   36 0000002C 2A00    shift   CMP              R2,#0       ; the row location 
+                                                            is gotten by shifti
+                                                            ng the desired shap
+                                                            e value
+   37 0000002E D004            BEQ              continue
+   38 00000030 EA4F 0858       LSR              R8,#1
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   39 00000034 F1A2 0201       SUB              R2,#1
+   40 00000038 E7F8            B                shift
+   41 0000003A 464A    continue
+                               MOV              R2, R9
+   42 0000003C 6826            LDR              R6, [R4]
+   43 0000003E EA48 0806       ORR              R8, R6
+   44 00000042 F844 8B04       STR              R8, [R4], #4
+   45 00000046 68E6            LDR              R6, [R4,#12]
+   46 00000048 EA48 0806       ORR              R8, R6
+   47 0000004C F8C4 800C       STR              R8, [R4,#12]
+   48 00000050 F04F 4819       LDR              R8,=0x99000000
+   49 00000054 2A00    shift2  CMP              R2,#0
+   50 00000056 D004            BEQ              go
+   51 00000058 EA4F 0858       LSR              R8,#1
+   52 0000005C F1A2 0201       SUB              R2,#1
+   53 00000060 E7F8            B                shift2
+   54 00000062 6826    go      LDR              R6, [R4]    ; the desired shape
+                                                             is given but ORR'e
+                                                            d not to lose the p
+                                                            ast mines
+   55 00000064 EA48 0806       ORR              R8, R6
+   56 00000068 F844 8B04       STR              R8, [R4],#4
+   57 0000006C 6826            LDR              R6, [R4]
+   58 0000006E EA48 0806       ORR              R8, R6
+   59 00000072 F844 8B04       STR              R8, [R4],#4
+   60 00000076 6826            LDR              R6, [R4]
+   61 00000078 EA48 0806       ORR              R8, R6
+   62 0000007C F844 8B04       STR              R8, [R4],#4
+   63 00000080 6826            LDR              R6, [R4]
+   64 00000082 EA48 0806       ORR              R8, R6
+   65 00000086 F844 8B04       STR              R8, [R4],#4
+   66 0000008A 6826            LDR              R6, [R4]
+   67 0000008C EA48 0806       ORR              R8, R6
+   68 00000090 F844 8B04       STR              R8, [R4],#4
+   69 00000094 6826            LDR              R6, [R4]
+   70 00000096 EA48 0806       ORR              R8, R6
+   71 0000009A F844 8B08       STR              R8, [R4],#8
+   72 0000009E F105 0508       ADD              R5, #8
+   73 000000A2 2D41    loop    CMP              R5, #65
+   74 000000A4 D009            BEQ              endd
+   75 000000A6 F04F 0800       LDR              R8,= 0x00000000
+   76 000000AA 6826            LDR              R6, [R4]
+   77 000000AC EA48 0806       ORR              R8, R6
+   78 000000B0 F844 8B04       STR              R8, [R4], #4
+   79 000000B4 F105 0501       ADD              R5, #1
+   80 000000B8 E7B4            B                st
+   81 000000BA         endd
+   82 000000BA E8BD 41FF       POP              {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   83 000000BE 4770            BX               LR
+   84 000000C0                 END
+              2000000C 
+              20000E00 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\buttons2.d -o.\objects\buttons2.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\buttons2.lst buttons2
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+buttons2 00000000
+
+Symbol: buttons2
+   Definitions
+      At line 11 in file buttons2.s
+   Uses
+      At line 8 in file buttons2.s
+Comment: buttons2 used once
+check_col 00000016
+
+Symbol: check_col
+   Definitions
+      At line 22 in file buttons2.s
+   Uses
+      None
+Comment: check_col unused
+check_row 00000012
+
+Symbol: check_row
+   Definitions
+      At line 20 in file buttons2.s
+   Uses
+      None
+Comment: check_row unused
+continue 0000003A
+
+Symbol: continue
+   Definitions
+      At line 41 in file buttons2.s
+   Uses
+      At line 37 in file buttons2.s
+Comment: continue used once
+endd 000000BA
+
+Symbol: endd
+   Definitions
+      At line 81 in file buttons2.s
+   Uses
+      At line 74 in file buttons2.s
+Comment: endd used once
+get_rc 0000000E
+
+Symbol: get_rc
+   Definitions
+      At line 19 in file buttons2.s
+   Uses
+      At line 23 in file buttons2.s
+Comment: get_rc used once
+go 00000062
+
+Symbol: go
+   Definitions
+      At line 54 in file buttons2.s
+   Uses
+      At line 50 in file buttons2.s
+Comment: go used once
+loop 000000A2
+
+Symbol: loop
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 73 in file buttons2.s
+   Uses
+      At line 34 in file buttons2.s
+Comment: loop used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 5 in file buttons2.s
+   Uses
+      None
+Comment: part1 unused
+shift 0000002C
+
+Symbol: shift
+   Definitions
+      At line 36 in file buttons2.s
+   Uses
+      At line 40 in file buttons2.s
+Comment: shift used once
+shift2 00000054
+
+Symbol: shift2
+   Definitions
+      At line 49 in file buttons2.s
+   Uses
+      At line 53 in file buttons2.s
+Comment: shift2 used once
+st 00000024
+
+Symbol: st
+   Definitions
+      At line 33 in file buttons2.s
+   Uses
+      At line 80 in file buttons2.s
+Comment: st used once
+start 0000001A
+
+Symbol: start
+   Definitions
+      At line 24 in file buttons2.s
+   Uses
+      At line 21 in file buttons2.s
+Comment: start used once
+13 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+mines_address 20000E00
+
+Symbol: mines_address
+   Definitions
+      At line 1 in file buttons2.s
+   Uses
+      At line 25 in file buttons2.s
+Comment: mines_address used once
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+get_row_col_mine 00000000
+
+Symbol: get_row_col_mine
+   Definitions
+      At line 7 in file buttons2.s
+   Uses
+      At line 19 in file buttons2.s
+Comment: get_row_col_mine used once
+1 symbol
+351 symbols in table

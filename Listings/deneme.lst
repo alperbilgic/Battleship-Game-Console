@@ -1,0 +1,230 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             part1, CODE, READONLY
+    2 00000000                 THUMB
+    3 00000000                 EXTERN           get_row_col
+    4 00000000                 EXPORT           get_rc
+    5 00000000         
+    6 00000000         
+    7 00000000         
+    8 00000000         get_rc  PROC
+    9 00000000 E92D 41FF       PUSH             {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   10 00000004 F7FF FFFE 
+                       getrow  BL               get_row_col ; get value from AD
+                                                            C
+   11 00000008 454A    check_row
+                               CMP              R2,R9       ; R9 is previous ro
+                                                            w
+   12 0000000A D101            BNE              start
+   13 0000000C 4553    check_col
+                               CMP              R3, R10     ; R10 is previous c
+                                                            olumn
+   14 0000000E D0F9            BEQ              getrow      ; if values are sam
+                                                            e go back to get ne
+                                                            w values
+   15 00000010 469A    start   MOV              R10,R3      ; R10 gets the next
+                                                             column
+   16 00000012 4C1A            LDR              R4,=0x20000500
+   17 00000014 F04F 0500       MOV              R5,#0
+   18 00000018         ;CMP R2, #2
+   19 00000018         ;BLT getrow
+   20 00000018         ;CMP R3, #2
+   21 00000018         ;BLT getrow
+   22 00000018         ;CMP R2, #29
+   23 00000018         ;BGT getrow
+   24 00000018         ;CMP R3, #61
+   25 00000018         ;BGT getrow
+   26 00000018 F1A3 0602       SUB              R6,R3,#2    ; column-2
+   27 0000001C F1A2 0702       SUB              R7, R2, #2  ; row-2
+   28 00000020         
+   29 00000020 42B5    st      CMP              R5, R6      ; save screen page
+   30 00000022 D11F            BNE              loop
+   31 00000024 F04F 0801       LDR              R8, = 0x00000001 ; to create th
+                                                            e horizontal line o
+                                                            f the cursor
+   32 00000028 2A00    shift   CMP              R2,#0
+   33 0000002A D004            BEQ              continue
+   34 0000002C EA4F 0848       LSL              R8,#1
+   35 00000030 F1A2 0201       SUB              R2,#1
+   36 00000034 E7F8            B                shift
+   37 00000036 F107 0902 
+                       continue
+                               ADD              R9, R7, #2
+   38 0000003A F844 8B04       STR              R8, [R4], #4
+   39 0000003E F844 8B04       STR              R8, [R4], #4
+   40 00000042 F8C4 8004       STR              R8, [R4,#4]
+   41 00000046 F8C4 8008       STR              R8, [R4,#8]
+   42 0000004A F04F 081F       LDR              R8,=0x0000001F ; to create the 
+                                                            vertical line of th
+                                                            e cursor
+   43 0000004E 2F00    shift2  CMP              R7,#0
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   44 00000050 D004            BEQ              go
+   45 00000052 EA4F 0848       LSL              R8,#1
+   46 00000056 F1A7 0701       SUB              R7,#1
+   47 0000005A E7F8            B                shift2
+   48 0000005C F844 8B0C 
+                       go      STR              R8, [R4], #12
+   49 00000060 F105 0505       ADD              R5, #5
+   50 00000064 2D41    loop    CMP              R5, #65
+   51 00000066 D206            BHS              endd
+   52 00000068 F04F 0800       LDR              R8,= 0x00000000 ; the places di
+                                                            fferent from cursor
+                                                             are loa
+   53 0000006C F844 8B04       STR              R8, [R4], #4
+   54 00000070 F105 0501       ADD              R5, #1
+   55 00000074 E7D4            B                st
+   56 00000076         endd
+   57 00000076 E8BD 41FF       POP              {R0,R1,R2,R3,R4,R5,R6,R7,R8, LR
+}
+   58 0000007A 4770            BX               LR
+   59 0000007C                 END
+              20000500 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\deneme.d -o.\objects\deneme.o -I.\RTE\_Target_1 -IC:\
+Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
+" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\deneme.lst deneme.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+check_col 0000000C
+
+Symbol: check_col
+   Definitions
+      At line 13 in file deneme.s
+   Uses
+      None
+Comment: check_col unused
+check_row 00000008
+
+Symbol: check_row
+   Definitions
+      At line 11 in file deneme.s
+   Uses
+      None
+Comment: check_row unused
+continue 00000036
+
+Symbol: continue
+   Definitions
+      At line 37 in file deneme.s
+   Uses
+      At line 33 in file deneme.s
+Comment: continue used once
+endd 00000076
+
+Symbol: endd
+   Definitions
+      At line 56 in file deneme.s
+   Uses
+      At line 51 in file deneme.s
+Comment: endd used once
+get_rc 00000000
+
+Symbol: get_rc
+   Definitions
+      At line 8 in file deneme.s
+   Uses
+      At line 4 in file deneme.s
+Comment: get_rc used once
+getrow 00000004
+
+Symbol: getrow
+   Definitions
+      At line 10 in file deneme.s
+   Uses
+      At line 14 in file deneme.s
+Comment: getrow used once
+go 0000005C
+
+Symbol: go
+   Definitions
+      At line 48 in file deneme.s
+   Uses
+      At line 44 in file deneme.s
+Comment: go used once
+loop 00000064
+
+Symbol: loop
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 50 in file deneme.s
+   Uses
+      At line 30 in file deneme.s
+Comment: loop used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 1 in file deneme.s
+   Uses
+      None
+Comment: part1 unused
+shift 00000028
+
+Symbol: shift
+   Definitions
+      At line 32 in file deneme.s
+   Uses
+      At line 36 in file deneme.s
+Comment: shift used once
+shift2 0000004E
+
+Symbol: shift2
+   Definitions
+      At line 43 in file deneme.s
+   Uses
+      At line 47 in file deneme.s
+Comment: shift2 used once
+st 00000020
+
+Symbol: st
+   Definitions
+      At line 29 in file deneme.s
+   Uses
+      At line 55 in file deneme.s
+Comment: st used once
+start 00000010
+
+Symbol: start
+   Definitions
+      At line 15 in file deneme.s
+   Uses
+      At line 12 in file deneme.s
+Comment: start used once
+13 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+get_row_col 00000000
+
+Symbol: get_row_col
+   Definitions
+      At line 3 in file deneme.s
+   Uses
+      At line 10 in file deneme.s
+Comment: get_row_col used once
+1 symbol
+350 symbols in table

@@ -1,0 +1,304 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       GPIO_PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000 40008008 
+                       SSIDR   EQU              0x40008008
+    3 00000000 4000800C 
+                       SSISR   EQU              0x4000800C
+    4 00000000         
+    5 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    6 00000000                 AREA             subroutin, READONLY, CODE
+    7 00000000                 THUMB
+    8 00000000                 EXTERN           initSSI
+    9 00000000                 EXTERN           initGPIO
+   10 00000000                 EXTERN           delayy
+   11 00000000                 EXTERN           sendDC
+   12 00000000                 EXTERN           fillzero
+   13 00000000                 EXTERN           InitSysTick
+   14 00000000         
+   15 00000000                 EXPORT           __main      ; Make available
+   16 00000000         ; the startup2 and set_b2 files are gonna be used in thi
+                       s part
+   17 00000000         
+   18 00000000         __main
+   19 00000000 F7FF FFFE       BL               initGPIO    ; PORT B IS INITIAL
+                                                            IZED
+   20 00000004 F7FF FFFE       BL               initSSI
+   21 00000008         
+   22 00000008         
+   23 00000008 4836            LDR              R0, =GPIO_PORTA_DATA
+   24 0000000A 6801            LDR              R1, [R0]
+   25 0000000C F021 0180       BIC              R1, #0x80
+   26 00000010 6001            STR              R1, [R0]
+   27 00000012 F7FF FFFE       BL               delayy
+   28 00000016         
+   29 00000016 F041 0180       ORR              R1, # 0x80
+   30 0000001A 6001            STR              R1, [R0]
+   31 0000001C         
+   32 0000001C 4832            LDR              R0, =SSISR
+   33 0000001E 6801    LUP     LDR              R1, [R0]
+   34 00000020 F001 0110       AND              R1, #0x10
+   35 00000024 2901            CMP              R1, #1
+   36 00000026 D0FA            BEQ              LUP
+   37 00000028         
+   38 00000028 492E            LDR              R1, =GPIO_PORTA_DATA
+   39 0000002A 6801            LDR              R1, [R0]
+   40 0000002C F021 0140       BIC              R1, #0x40   ; D/C PIN IS CLEARE
+                                                            D (COMMAND)
+   41 00000030 6001            STR              R1, [R0]
+   42 00000032         
+   43 00000032 482E            LDR              R0, =SSIDR
+   44 00000034 F04F 0121       MOV              R1, #0x21
+   45 00000038 6001            STR              R1, [R0]
+   46 0000003A         
+   47 0000003A F04F 02A4       MOV              R2, #0xA4   ; VOP
+   48 0000003E F7FF FFFE       BL               sendDC
+   49 00000042         
+   50 00000042 F04F 02B8       MOV              R2, #0xB8   ; CONTRAST
+   51 00000046 F7FF FFFE       BL               sendDC
+   52 0000004A         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   53 0000004A         
+   54 0000004A F04F 0204       MOV              R2, #0x04   ; TEMPERATURE
+   55 0000004E F7FF FFFE       BL               sendDC
+   56 00000052         
+   57 00000052         
+   58 00000052 F04F 0213       MOV              R2, #0x13   ; BIAS MODE
+   59 00000056 F7FF FFFE       BL               sendDC
+   60 0000005A         
+   61 0000005A         
+   62 0000005A F04F 0220       MOV              R2, #0x20   ; H=0
+   63 0000005E F7FF FFFE       BL               sendDC
+   64 00000062         
+   65 00000062         
+   66 00000062 F04F 020C       MOV              R2, #0x0C   ; NORMAL DISPLAY
+   67 00000066 F7FF FFFE       BL               sendDC
+   68 0000006A         
+   69 0000006A F7FF FFFE       BL               fillzero
+   70 0000006E         
+   71 0000006E F04F 0A14       MOV              R10, #20
+   72 00000072         
+   73 00000072 481C            LDR              R0, =GPIO_PORTA_DATA
+   74 00000074         
+   75 00000074 6801            LDR              R1, [R0]
+   76 00000076 F021 0140       BIC              R1, #0x40   ; COMMAND MODE
+   77 0000007A 6001            STR              R1, [R0]
+   78 0000007C         
+   79 0000007C         
+   80 0000007C F04F 0240       MOV              R2, #0x40   ; Y POSITION
+   81 00000080 F7FF FFFE       BL               sendDC
+   82 00000084         
+   83 00000084 F04F 02CC       MOV              R2, #0xCC   ; X POSITION
+   84 00000088 F7FF FFFE       BL               sendDC
+   85 0000008C         
+   86 0000008C 4815            LDR              R0, =GPIO_PORTA_DATA
+   87 0000008E         
+   88 0000008E 6801            LDR              R1, [R0]
+   89 00000090 F041 0140       ORR              R1, #0x40
+   90 00000094 6001            STR              R1, [R0]
+   91 00000096         
+   92 00000096 4815            LDR              R0, =SSIDR
+   93 00000098         
+   94 00000098 F04F 02C2       MOV              R2, #0xC2
+   95 0000009C F7FF FFFE       BL               sendDC
+   96 000000A0 F04F 02A1       MOV              R2, #0xA1
+   97 000000A4 F7FF FFFE       BL               sendDC
+   98 000000A8 F04F 0299       MOV              R2, #0x99
+   99 000000AC F7FF FFFE       BL               sendDC
+  100 000000B0 F04F 0286       MOV              R2, #0x86
+  101 000000B4 F7FF FFFE       BL               sendDC
+  102 000000B8 F04F 027E       MOV              R2, #0x7E
+  103 000000BC F7FF FFFE       BL               sendDC
+  104 000000C0 F04F 0281       MOV              R2, #0x81
+  105 000000C4 F7FF FFFE       BL               sendDC
+  106 000000C8 F04F 0281       MOV              R2, #0x81
+  107 000000CC F7FF FFFE       BL               sendDC
+  108 000000D0 F04F 027E       MOV              R2, #0x7E
+  109 000000D4 F7FF FFFE       BL               sendDC
+  110 000000D8         
+  111 000000D8 F7FF FFFE       BL               InitSysTick
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  112 000000DC         
+  113 000000DC B662            CPSIE            I
+  114 000000DE         
+  115 000000DE BF30    Loop    WFI
+  116 000000E0 E7FD            B                Loop
+  117 000000E2         
+  118 000000E2 00 00           ALIGN
+  119 000000E4                 END
+              400043FC 
+              4000800C 
+              40008008 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\mainfortimer.d -o.\objects\mainfortimer.o -I.\RTE\_Ta
+rget_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Ke
+il_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERS
+ION SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\mainfortimer.
+lst mainfortimer.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+LUP 0000001E
+
+Symbol: LUP
+   Definitions
+      At line 33 in file mainfortimer.s
+   Uses
+      At line 36 in file mainfortimer.s
+Comment: LUP used once
+Loop 000000DE
+
+Symbol: Loop
+   Definitions
+      At line 115 in file mainfortimer.s
+   Uses
+      At line 116 in file mainfortimer.s
+Comment: Loop used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 18 in file mainfortimer.s
+   Uses
+      At line 15 in file mainfortimer.s
+Comment: __main used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 6 in file mainfortimer.s
+   Uses
+      None
+Comment: subroutin unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTA_DATA 400043FC
+
+Symbol: GPIO_PORTA_DATA
+   Definitions
+      At line 1 in file mainfortimer.s
+   Uses
+      At line 23 in file mainfortimer.s
+      At line 38 in file mainfortimer.s
+      At line 73 in file mainfortimer.s
+      At line 86 in file mainfortimer.s
+
+SSIDR 40008008
+
+Symbol: SSIDR
+   Definitions
+      At line 2 in file mainfortimer.s
+   Uses
+      At line 43 in file mainfortimer.s
+      At line 92 in file mainfortimer.s
+
+SSISR 4000800C
+
+Symbol: SSISR
+   Definitions
+      At line 3 in file mainfortimer.s
+   Uses
+      At line 32 in file mainfortimer.s
+Comment: SSISR used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+InitSysTick 00000000
+
+Symbol: InitSysTick
+   Definitions
+      At line 13 in file mainfortimer.s
+   Uses
+      At line 111 in file mainfortimer.s
+Comment: InitSysTick used once
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 10 in file mainfortimer.s
+   Uses
+      At line 27 in file mainfortimer.s
+Comment: delayy used once
+fillzero 00000000
+
+Symbol: fillzero
+   Definitions
+      At line 12 in file mainfortimer.s
+   Uses
+      At line 69 in file mainfortimer.s
+Comment: fillzero used once
+initGPIO 00000000
+
+Symbol: initGPIO
+   Definitions
+      At line 9 in file mainfortimer.s
+   Uses
+      At line 19 in file mainfortimer.s
+Comment: initGPIO used once
+initSSI 00000000
+
+Symbol: initSSI
+   Definitions
+      At line 8 in file mainfortimer.s
+   Uses
+      At line 20 in file mainfortimer.s
+Comment: initSSI used once
+sendDC 00000000
+
+Symbol: sendDC
+   Definitions
+      At line 11 in file mainfortimer.s
+   Uses
+      At line 48 in file mainfortimer.s
+      At line 51 in file mainfortimer.s
+      At line 55 in file mainfortimer.s
+      At line 59 in file mainfortimer.s
+      At line 63 in file mainfortimer.s
+      At line 67 in file mainfortimer.s
+      At line 81 in file mainfortimer.s
+      At line 84 in file mainfortimer.s
+      At line 95 in file mainfortimer.s
+      At line 97 in file mainfortimer.s
+      At line 99 in file mainfortimer.s
+      At line 101 in file mainfortimer.s
+      At line 103 in file mainfortimer.s
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
+      At line 105 in file mainfortimer.s
+      At line 107 in file mainfortimer.s
+      At line 109 in file mainfortimer.s
+
+6 symbols
+349 symbols in table

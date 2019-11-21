@@ -1,0 +1,123 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 E000E010 
+                       NVIC_ST_CTRL
+                               EQU              0xE000E010
+    2 00000000 400053FC 
+                       GPIO_PORTB_DATA
+                               EQU              0x400053FC
+    3 00000000         
+    4 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    5 00000000                 AREA             subroutin, READONLY, CODE
+    6 00000000                 THUMB
+    7 00000000                 EXTERN           drawcurs
+    8 00000000                 EXPORT           SysTick_Handler 
+                                                            ; Make available
+    9 00000000         
+   10 00000000         
+   11 00000000         
+   12 00000000         SysTick_Handler
+                               PROC
+   13 00000000 B503            PUSH             {R1,R0,LR}
+   14 00000002         
+   15 00000002 F1AA 0A01       SUB              R10, #1
+   16 00000006 F1BA 0F00       CMP              R10, #0
+   17 0000000A D103            BNE              ENDD
+   18 0000000C 4804            LDR              R0, =NVIC_ST_CTRL ; SYSTICK con
+                                                            trol and status reg
+                                                            ister
+   19 0000000E F04F 0100       MOV              R1, #0
+   20 00000012 6001            STR              R1, [R0]    ; stop counter to p
+                                                            revent interrupt tr
+                                                            iggered accidentall
+                                                            y
+   21 00000014         
+   22 00000014         
+   23 00000014 F7FF FFFE 
+                       ENDD    BL               drawcurs
+   24 00000018         
+   25 00000018 E8BD 4003       POP              {R0,R1,LR}
+   26 0000001C 4770            BX               LR
+   27 0000001E                 ENDP
+                       
+              00 00 E000E010 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\sysforcurs.d -o.\objects\sysforcurs.o -I.\RTE\_Target
+_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v
+5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION 
+SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\sysforcurs.lst sy
+sforcurs.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+ENDD 00000014
+
+Symbol: ENDD
+   Definitions
+      At line 23 in file sysforcurs.s
+   Uses
+      At line 17 in file sysforcurs.s
+Comment: ENDD used once
+SysTick_Handler 00000000
+
+Symbol: SysTick_Handler
+   Definitions
+      At line 12 in file sysforcurs.s
+   Uses
+      At line 8 in file sysforcurs.s
+Comment: SysTick_Handler used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 5 in file sysforcurs.s
+   Uses
+      None
+Comment: subroutin unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTB_DATA 400053FC
+
+Symbol: GPIO_PORTB_DATA
+   Definitions
+      At line 2 in file sysforcurs.s
+   Uses
+      None
+Comment: GPIO_PORTB_DATA unused
+NVIC_ST_CTRL E000E010
+
+Symbol: NVIC_ST_CTRL
+   Definitions
+      At line 1 in file sysforcurs.s
+   Uses
+      At line 18 in file sysforcurs.s
+Comment: NVIC_ST_CTRL used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+drawcurs 00000000
+
+Symbol: drawcurs
+   Definitions
+      At line 7 in file sysforcurs.s
+   Uses
+      At line 23 in file sysforcurs.s
+Comment: drawcurs used once
+1 symbol
+342 symbols in table

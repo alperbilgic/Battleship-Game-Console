@@ -1,0 +1,95 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000                 AREA             part1, CODE, READONLY
+    4 00000000                 THUMB
+    5 00000000         
+    6 00000000                 EXPORT           screen2
+    7 00000000         
+    8 00000000         screen2
+    9 00000000         
+   10 00000000         start   PROC
+   11 00000000 E92D 5FFF       PUSH             { R0-R12, LR}
+   12 00000004 4809            LDR              R0,= 0x20000D00 ; cursor
+   13 00000006 490A            LDR              R1,= 0x20000E00 ; mines
+   14 00000008 4B0A            LDR              R3,= 0x20000F00 ; screen
+   15 0000000A         
+   16 0000000A F04F 0840       MOV              R8, #64     ; the screen of sec
+                                                            ond player is gotte
+                                                            n by combining valu
+                                                            es of cursor and mi
+                                                            ne memories
+   17 0000000E F850 4B04 
+                       check   LDR              R4, [R0], #4
+   18 00000012 F851 5B04       LDR              R5, [R1], #4
+   19 00000016 EA45 0704       ORR              R7, R5, R4
+   20 0000001A F843 7B04       STR              R7, [R3], #4
+   21 0000001E F1B8 0801       SUBS             R8, #1
+   22 00000022 D1F4            BNE              check
+   23 00000024         ; print the memory starting with 0x20000F00 to the scree
+                       n
+   24 00000024         abort_mission
+   25 00000024 E8BD 5FFF       POP              {R0-R12, LR}
+   26 00000028 4770            BX               LR
+   27 0000002A                 END
+              00 00 20000D00 
+              20000E00 
+              20000F00 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\screen2.d -o.\objects\screen2.o -I.\RTE\_Target_1 -IC
+:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\
+CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 5
+26" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\screen2.lst screen2.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+abort_mission 00000024
+
+Symbol: abort_mission
+   Definitions
+      At line 24 in file screen2.s
+   Uses
+      None
+Comment: abort_mission unused
+check 0000000E
+
+Symbol: check
+   Definitions
+      At line 17 in file screen2.s
+   Uses
+      At line 22 in file screen2.s
+Comment: check used once
+part1 00000000
+
+Symbol: part1
+   Definitions
+      At line 3 in file screen2.s
+   Uses
+      None
+Comment: part1 unused
+screen2 00000000
+
+Symbol: screen2
+   Definitions
+      At line 8 in file screen2.s
+   Uses
+      At line 6 in file screen2.s
+Comment: screen2 used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 10 in file screen2.s
+   Uses
+      None
+Comment: start unused
+5 symbols
+341 symbols in table

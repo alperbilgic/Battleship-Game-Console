@@ -1,0 +1,172 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             subroutin, READONLY, CODE
+    2 00000000                 THUMB
+    3 00000000                 EXTERN           delayy
+    4 00000000                 EXTERN           screen
+    5 00000000                 EXPORT           civilian    ; Make available,
+    6 00000000         
+    7 00000000         
+    8 00000000         
+    9 00000000         civilian
+                               PROC
+   10 00000000 E92D 5FFF       PUSH             {R0-R12,LR}
+   11 00000004         
+   12 00000004 464A            MOV              R2,R9
+   13 00000006 4653            MOV              R3,R10
+   14 00000008 4C20            LDR              R4,=0x20000700
+   15 0000000A F04F 0500       MOV              R5,#0
+   16 0000000E F1A3 0602       SUB              R6,R3,#2    ; column-2
+   17 00000012 F1A2 0702       SUB              R7, R2, #2  ; row-2
+   18 00000016         
+   19 00000016 42B5    st      CMP              R5, R6      ; save screen's add
+                                                            ress
+   20 00000018 D128            BNE              loop
+   21 0000001A         
+   22 0000001A F04F 081F       LDR              R8,=0x0000001F
+   23 0000001E F04F 0111       LDR              R1,=0x00000011
+   24 00000022 F04F 0000       MOV              R0,#0x00
+   25 00000026 2F00    shift2  CMP              R7,#0       ; the vertical line
+                                                            s are gotten by shi
+                                                            fting the values fo
+                                                            r location value of
+                                                             rows times
+   26 00000028 D006            BEQ              go
+   27 0000002A EA4F 0848       LSL              R8,#1
+   28 0000002E EA4F 0141       LSL              R1,#1
+   29 00000032 F1A7 0701       SUB              R7,#1
+   30 00000036 E7F6            B                shift2
+   31 00000038 6820    go      LDR              R0, [R4]    ; the desired shape
+                                                             is given to civili
+                                                            an ships
+   32 0000003A EA48 0800       ORR              R8, R0
+   33 0000003E F844 8B04       STR              R8, [R4], #4
+   34 00000042 6820            LDR              R0, [R4]
+   35 00000044 EA41 0100       ORR              R1, R0
+   36 00000048 F844 1B04       STR              R1, [R4], #4
+   37 0000004C 6820            LDR              R0, [R4]
+   38 0000004E EA41 0100       ORR              R1, R0
+   39 00000052 6061            STR              R1, [R4,#4]
+   40 00000054 6820            LDR              R0, [R4]
+   41 00000056 EA48 0800       ORR              R8, R0
+   42 0000005A F8C4 8008       STR              R8, [R4,#8]
+   43 0000005E 6820            LDR              R0, [R4]
+   44 00000060 EA48 0800       ORR              R8, R0
+   45 00000064 F844 8B0C       STR              R8, [R4], #12
+   46 00000068 F105 0505       ADD              R5, #5
+   47 0000006C F04F 0800 
+                       loop    MOV              R8, #0x00
+   48 00000070 6820            LDR              R0, [R4]
+   49 00000072 EA48 0800       ORR              R8, R0
+   50 00000076 F844 8B04       STR              R8, [R4], #4 ; zeros are places
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                             by orrin values no
+                                                            t to loose the ship
+                                                            s placed before  
+   51 0000007A F105 0501       ADD              R5, #1
+   52 0000007E 2D40            CMP              R5, #64
+   53 00000080 D1C9            BNE              st
+   54 00000082 F7FF FFFE       BL               screen      ; screen is placed 
+                                                            to related memory s
+                                                            pace to get values
+   55 00000086 E8BD 5FFF       POP              {R0-R12,LR}
+   56 0000008A 4770            BX               LR
+   57 0000008C                 ENDP
+   58 0000008C         
+   59 0000008C         
+                       
+              20000700 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\civilian.d -o.\objects\civilian.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\civilian.lst civilian
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+civilian 00000000
+
+Symbol: civilian
+   Definitions
+      At line 9 in file civilian.s
+   Uses
+      At line 5 in file civilian.s
+Comment: civilian used once
+go 00000038
+
+Symbol: go
+   Definitions
+      At line 31 in file civilian.s
+   Uses
+      At line 26 in file civilian.s
+Comment: go used once
+loop 0000006C
+
+Symbol: loop
+   Definitions
+      At line 47 in file civilian.s
+   Uses
+      At line 20 in file civilian.s
+Comment: loop used once
+shift2 00000026
+
+Symbol: shift2
+   Definitions
+      At line 25 in file civilian.s
+   Uses
+      At line 30 in file civilian.s
+Comment: shift2 used once
+st 00000016
+
+Symbol: st
+   Definitions
+      At line 19 in file civilian.s
+   Uses
+      At line 53 in file civilian.s
+Comment: st used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 1 in file civilian.s
+   Uses
+      None
+Comment: subroutin unused
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 3 in file civilian.s
+   Uses
+      None
+Comment: delayy unused
+screen 00000000
+
+Symbol: screen
+   Definitions
+      At line 4 in file civilian.s
+   Uses
+      At line 54 in file civilian.s
+Comment: screen used once
+2 symbols
+344 symbols in table

@@ -1,0 +1,120 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 4000800C 
+                       SSISR   EQU              0x4000800C
+    2 00000000 40008008 
+                       SSIDR   EQU              0x40008008
+    3 00000000         
+    4 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    5 00000000                 AREA             subroutin, READONLY, CODE
+    6 00000000                 THUMB
+    7 00000000                 EXPORT           sendDC
+    8 00000000         
+    9 00000000         
+   10 00000000         
+   11 00000000         sendDC  PROC
+   12 00000000         
+   13 00000000 B403            PUSH             {R1,R0}     ; R2 WILL BE PASSED
+                                                            
+   14 00000002         
+   15 00000002         
+   16 00000002 4808            LDR              R0, =SSISR
+   17 00000004 6801    LUP     LDR              R1, [R0]
+   18 00000006 F001 0110       AND              R1, #0x10
+   19 0000000A 2910            CMP              R1, #0x10
+   20 0000000C D0FA            BEQ              LUP         ; wait until tx buf
+                                                            fer is ready
+   21 0000000E         
+   22 0000000E 4806            LDR              R0, =SSIDR
+   23 00000010 6002            STR              R2, [R0]
+   24 00000012         
+   25 00000012 4804            LDR              R0, =SSISR
+   26 00000014 6801    LUP1    LDR              R1, [R0]
+   27 00000016 F001 0110       AND              R1, #0x10
+   28 0000001A 2910            CMP              R1, #0x10
+   29 0000001C D0FA            BEQ              LUP1        ; wait until tx buf
+                                                            fer is ready   
+   30 0000001E         
+   31 0000001E         
+   32 0000001E BC03            POP              {R1,R0}
+   33 00000020 4770            BX               LR
+   34 00000022                 ENDP
+   35 00000022         
+   36 00000022         
+   37 00000022         
+                       
+              00 00 4000800C 
+              40008008 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\senddc.d -o.\objects\senddc.o -I.\RTE\_Target_1 -IC:\
+Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526
+" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\senddc.lst sendDC.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+LUP 00000004
+
+Symbol: LUP
+   Definitions
+      At line 17 in file sendDC.s
+   Uses
+      At line 20 in file sendDC.s
+Comment: LUP used once
+LUP1 00000014
+
+Symbol: LUP1
+   Definitions
+      At line 26 in file sendDC.s
+   Uses
+      At line 29 in file sendDC.s
+Comment: LUP1 used once
+sendDC 00000000
+
+Symbol: sendDC
+   Definitions
+      At line 11 in file sendDC.s
+   Uses
+      At line 7 in file sendDC.s
+Comment: sendDC used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 5 in file sendDC.s
+   Uses
+      None
+Comment: subroutin unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+SSIDR 40008008
+
+Symbol: SSIDR
+   Definitions
+      At line 2 in file sendDC.s
+   Uses
+      At line 22 in file sendDC.s
+Comment: SSIDR used once
+SSISR 4000800C
+
+Symbol: SSISR
+   Definitions
+      At line 1 in file sendDC.s
+   Uses
+      At line 16 in file sendDC.s
+      At line 25 in file sendDC.s
+
+2 symbols
+342 symbols in table

@@ -1,0 +1,640 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       GPIO_PORTA_DATA
+                               EQU              0x400043FC
+    2 00000000 40008008 
+                       SSIDR   EQU              0x40008008
+    3 00000000 4000800C 
+                       SSISR   EQU              0x4000800C
+    4 00000000 20000800 
+                       DATA    EQU              0x20000800
+    5 00000000 20000F00 
+                       DATA2   EQU              0x20000F00
+    6 00000000 20001000 
+                       DATAZERO
+                               EQU              0x20001000
+    7 00000000         
+    8 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    9 00000000                 AREA             subroutin, READONLY, CODE
+   10 00000000                 THUMB
+   11 00000000                 EXTERN           initSSI
+   12 00000000                 EXTERN           initGPIO
+   13 00000000                 EXTERN           delayy
+   14 00000000                 EXTERN           sendDC
+   15 00000000                 EXTERN           fillzero
+   16 00000000                 EXTERN           drawcurs
+   17 00000000                 EXTERN           get_rc
+   18 00000000                 EXTERN           gpio_f
+   19 00000000                 EXTERN           screenzero
+   20 00000000                 EXTERN           screen
+   21 00000000                 EXTERN           newscreenzero
+   22 00000000                 EXTERN           screen2
+   23 00000000                 EXTERN           mines
+   24 00000000                 EXTERN           InitSysTick
+   25 00000000                 EXTERN           screen3
+   26 00000000         
+   27 00000000         
+   28 00000000                 EXPORT           __main      ; Make available
+   29 00000000         ; the startup2 and set_b2 files are gonna be used in thi
+                       s part
+   30 00000000         
+   31 00000000 B662    __main  CPSIE            I
+   32 00000002 F7FF FFFE       BL               initGPIO    ; PORT B IS INITIAL
+                                                            IZED
+   33 00000006 F7FF FFFE       BL               initSSI
+   34 0000000A F7FF FFFE       BL               screenzero
+   35 0000000E         
+   36 0000000E 4861            LDR              R0, =GPIO_PORTA_DATA
+   37 00000010 6801            LDR              R1, [R0]
+   38 00000012 F021 0180       BIC              R1, #0x80
+   39 00000016 6001            STR              R1, [R0]
+   40 00000018 F7FF FFFE       BL               delayy
+   41 0000001C         
+   42 0000001C F041 0180       ORR              R1, # 0x80
+   43 00000020 6001            STR              R1, [R0]
+   44 00000022         
+   45 00000022 485D            LDR              R0, =SSISR
+   46 00000024 6801    LUP     LDR              R1, [R0]
+   47 00000026 F001 0110       AND              R1, #0x10
+   48 0000002A 2901            CMP              R1, #1
+   49 0000002C D0FA            BEQ              LUP
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   50 0000002E         
+   51 0000002E 4959            LDR              R1, =GPIO_PORTA_DATA
+   52 00000030 6801            LDR              R1, [R0]
+   53 00000032 F021 0140       BIC              R1, #0x40   ; D/C PIN IS CLEARE
+                                                            D (COMMAND)
+   54 00000036 6001            STR              R1, [R0]
+   55 00000038         
+   56 00000038 4858            LDR              R0, =SSIDR
+   57 0000003A F04F 0121       MOV              R1, #0x21
+   58 0000003E 6001            STR              R1, [R0]
+   59 00000040         
+   60 00000040 F04F 02A4       MOV              R2, #0xA4   ; VOP
+   61 00000044 F7FF FFFE       BL               sendDC
+   62 00000048         
+   63 00000048 F04F 02B8       MOV              R2, #0xB8   ; CONTRAST
+   64 0000004C F7FF FFFE       BL               sendDC
+   65 00000050         
+   66 00000050         
+   67 00000050 F04F 0204       MOV              R2, #0x04   ; TEMPERATURE
+   68 00000054 F7FF FFFE       BL               sendDC
+   69 00000058         
+   70 00000058         
+   71 00000058 F04F 0213       MOV              R2, #0x13   ; BIAS MODE
+   72 0000005C F7FF FFFE       BL               sendDC
+   73 00000060         
+   74 00000060         
+   75 00000060 F04F 0220       MOV              R2, #0x20   ; H=0
+   76 00000064 F7FF FFFE       BL               sendDC
+   77 00000068         
+   78 00000068         
+   79 00000068 F04F 020C       MOV              R2, #0x0C   ; NORMAL DISPLAY
+   80 0000006C F7FF FFFE       BL               sendDC
+   81 00000070         
+   82 00000070 F7FF FFFE       BL               fillzero
+   83 00000074 F7FF FFFE       BL               gpio_f
+   84 00000078 F04F 0B00       MOV              R11, #0
+   85 0000007C 4848            LDR              R0, =0x20000004
+   86 0000007E F8C0 B000       STR              R11, [R0]
+   87 00000082 4848            LDR              R0, =0x2000000C
+   88 00000084 F8C0 B000       STR              R11, [R0]
+   89 00000088         
+   90 00000088 4845    return  LDR              R0, =0x20000004
+   91 0000008A F8D0 B000       LDR              R11, [R0]   ; R11 holds the val
+                                                            ue how many times t
+                                                            he button is presse
+                                                            d
+   92 0000008E F1BB 0F04       CMP              R11, #4
+   93 00000092 D805            BHI              ileri
+   94 00000094 F7FF FFFE       BL               get_rc      ; if the value is l
+                                                            ess then 4 battlesh
+                                                            ip cursor is placed
+                                                             on memory
+   95 00000098 F7FF FFFE       BL               screen      ; the screen matrix
+                                                             is gotten by gathe
+                                                            ring cursor and shi
+                                                            ps memories
+   96 0000009C 4D42            LDR              R5, =DATA
+   97 0000009E E012            B                ipileri
+   98 000000A0 F1BB 0F05 
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+                       ileri   CMP              R11, #5     ; if button is pres
+                                                            sed for 5 times giv
+                                                            e blank screen
+   99 000000A4 D803            BHI              ileri2
+  100 000000A6 F7FF FFFE       BL               newscreenzero
+  101 000000AA 4D40            LDR              R5, =DATAZERO
+  102 000000AC E00B            B                ipileri
+  103 000000AE F1BB 0F06 
+                       ileri2  CMP              R11, #6     ; if button is pres
+                                                            sed for 6 times giv
+                                                            e ships on the scre
+                                                            en
+  104 000000B2 D803            BHI              ileri3      ; the delay is give
+                                                            n after the screen 
+                                                            data is sent to NOK
+                                                            IA
+  105 000000B4 F7FF FFFE       BL               screen3     ; the battle and ci
+                                                            vilian ships gather
+                                                            ed into a space in 
+                                                            memory
+  106 000000B8 4D3B            LDR              R5,=DATA    ; the data is gotte
+                                                            n from memory place
+                                                             where ships are pl
+                                                            aced
+  107 000000BA E004            B                ipileri
+  108 000000BC         
+  109 000000BC F7FF FFFE 
+                       ileri3  BL               mines       ; if buttons are pr
+                                                            essed more then 6 t
+                                                            imes go to P2 scree
+                                                            n
+  110 000000C0 F7FF FFFE       BL               screen2     ; gather cursor mem
+                                                            .  and mines mem.
+  111 000000C4 4D3A            LDR              R5, =DATA2  ; the data place to
+                                                             send as screen is 
+                                                            changed to gathered
+                                                             memory space
+  112 000000C6         
+  113 000000C6         
+  114 000000C6 462E    ipileri MOV              R6, R5      ; screen data place
+                                                             is loaded to R6
+  115 000000C8 F04F 043F       MOV              R4, #63     ; 64 words are to b
+                                                            e sent for screen p
+                                                            rinting
+  116 000000CC F04F 0301       MOV              R3, #1      ; the data is sent 
+                                                            byte by byte so R3 
+                                                            will hold how many 
+                                                            times a 64 byte pac
+                                                            kage is sent
+  117 000000D0         
+  118 000000D0 4830            LDR              R0, =GPIO_PORTA_DATA 
+                                                            ; send command
+  119 000000D2 6801            LDR              R1, [R0]
+  120 000000D4 F021 0140       BIC              R1, #0x40
+  121 000000D8 6001            STR              R1, [R0]
+  122 000000DA         
+  123 000000DA F04F 0241       MOV              R2, #0x41   ; Y POSITION
+  124 000000DE F7FF FFFE       BL               sendDC
+  125 000000E2         
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  126 000000E2 F04F 0288       MOV              R2, #0x88   ; X POSITION
+  127 000000E6 F7FF FFFE       BL               sendDC
+  128 000000EA         
+  129 000000EA         
+  130 000000EA 482A            LDR              R0, =GPIO_PORTA_DATA
+  131 000000EC 6801            LDR              R1, [R0]
+  132 000000EE F041 0140       ORR              R1, #0x40
+  133 000000F2 6001            STR              R1, [R0]
+  134 000000F4         
+  135 000000F4 F815 2B04 
+                       lp      LDRB             R2, [R5],#4
+  136 000000F8 F7FF FFFE       BL               sendDC
+  137 000000FC F1A4 0401       SUB              R4, #1
+  138 00000100 2C00            CMP              R4, #0
+  139 00000102 D1F7            BNE              lp
+  140 00000104 F103 0301       ADD              R3, #1      ; one pack of 64 by
+                                                            te is sent
+  141 00000108         
+  142 00000108 4822            LDR              R0, =GPIO_PORTA_DATA 
+                                                            ; send command
+  143 0000010A 6801            LDR              R1, [R0]
+  144 0000010C F021 0140       BIC              R1, #0x40
+  145 00000110 6001            STR              R1, [R0]
+  146 00000112         
+  147 00000112 F043 0240       ORR              R2, R3, #0x40
+  148 00000116         ; Y POSITION
+  149 00000116 F7FF FFFE       BL               sendDC
+  150 0000011A         
+  151 0000011A F04F 0288       MOV              R2, #0x88   ; X POSITION
+  152 0000011E F7FF FFFE       BL               sendDC
+  153 00000122         
+  154 00000122 481C            LDR              R0, =GPIO_PORTA_DATA
+  155 00000124 6801            LDR              R1, [R0]
+  156 00000126 F041 0140       ORR              R1, #0x40
+  157 0000012A 6001            STR              R1, [R0]
+  158 0000012C         
+  159 0000012C F106 0601       ADD              R6, #1
+  160 00000130 4635            MOV              R5, R6
+  161 00000132 F04F 043F       MOV              R4, #63
+  162 00000136 2B05            CMP              R3, #5
+  163 00000138 D1DC            BNE              lp
+  164 0000013A         ;BL   delayy
+  165 0000013A F1BB 0F06       CMP              R11, #6
+  166 0000013E D119            BNE              endd
+  167 00000140 F7FF FFFE       BL               delayy      ; if the buttons ar
+                                                            e pressed for 6 tim
+                                                            es there should be 
+                                                            a delay for 0.5 sec
+                                                            
+  168 00000144 F7FF FFFE       BL               delayy
+  169 00000148 F7FF FFFE       BL               delayy
+  170 0000014C F7FF FFFE       BL               delayy
+  171 00000150 F7FF FFFE       BL               delayy
+  172 00000154 F1BB 0F06       CMP              R11, #6
+  173 00000158 4811            LDR              R0, =0x20000004
+  174 0000015A F8D0 B000       LDR              R11, [R0]
+  175 0000015E F10B 0B01       ADD              R11, #1
+  176 00000162 F8C0 B000       STR              R11, [R0]
+  177 00000166 4813            LDR              R0, =0x20000008
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  178 00000168 F04F 0A15       MOV              R10, #21
+  179 0000016C F8C0 A000       STR              R10, [R0]
+  180 00000170 F7FF FFFE       BL               InitSysTick ; after 0.5 sec dur
+                                                            ation of battle fie
+                                                            ld display the coun
+                                                            ter is started
+  181 00000174         
+  182 00000174         
+  183 00000174         
+  184 00000174 480A    endd    LDR              R0, =0x20000004 ; if the button
+                                                            s are pressed for f
+                                                            ive times zero scre
+                                                            en should be sent
+  185 00000176 F8D0 B000       LDR              R11, [R0]
+  186 0000017A F1BB 0F05       CMP              R11, #5
+  187 0000017E D108            BNE              zip
+  188 00000180 4807    LoopZ   LDR              R0, =0x20000004
+  189 00000182 F8D0 B000       LDR              R11, [R0]
+  190 00000186 F1BB 0F05       CMP              R11, #5
+  191 0000018A D102            BNE              zip
+  192 0000018C F7FF FFFE       BL               fillzero    ; screen is cleared
+                                                             until next press o
+                                                            f any button
+  193 00000190 E7F6            B                LoopZ
+  194 00000192         
+  195 00000192 E779    zip     B                return
+  196 00000194         
+  197 00000194                 ALIGN
+  198 00000194                 END
+              400043FC 
+              4000800C 
+              40008008 
+              20000004 
+              2000000C 
+              20000800 
+              20001000 
+              20000F00 
+              20000008 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\maincursor.d -o.\objects\maincursor.o -I.\RTE\_Target
+_1 -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v
+5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION 
+SETA 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\maincursor.lst ma
+incursor.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+LUP 00000024
+
+Symbol: LUP
+   Definitions
+      At line 46 in file maincursor.s
+   Uses
+      At line 49 in file maincursor.s
+Comment: LUP used once
+LoopZ 00000180
+
+Symbol: LoopZ
+   Definitions
+      At line 188 in file maincursor.s
+   Uses
+      At line 193 in file maincursor.s
+Comment: LoopZ used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 31 in file maincursor.s
+   Uses
+      At line 28 in file maincursor.s
+Comment: __main used once
+endd 00000174
+
+Symbol: endd
+   Definitions
+      At line 184 in file maincursor.s
+   Uses
+      At line 166 in file maincursor.s
+Comment: endd used once
+ileri 000000A0
+
+Symbol: ileri
+   Definitions
+      At line 98 in file maincursor.s
+   Uses
+      At line 93 in file maincursor.s
+Comment: ileri used once
+ileri2 000000AE
+
+Symbol: ileri2
+   Definitions
+      At line 103 in file maincursor.s
+   Uses
+      At line 99 in file maincursor.s
+Comment: ileri2 used once
+ileri3 000000BC
+
+Symbol: ileri3
+   Definitions
+      At line 109 in file maincursor.s
+   Uses
+      At line 104 in file maincursor.s
+Comment: ileri3 used once
+ipileri 000000C6
+
+Symbol: ipileri
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 114 in file maincursor.s
+   Uses
+      At line 97 in file maincursor.s
+      At line 102 in file maincursor.s
+      At line 107 in file maincursor.s
+
+lp 000000F4
+
+Symbol: lp
+   Definitions
+      At line 135 in file maincursor.s
+   Uses
+      At line 139 in file maincursor.s
+      At line 163 in file maincursor.s
+
+return 00000088
+
+Symbol: return
+   Definitions
+      At line 90 in file maincursor.s
+   Uses
+      At line 195 in file maincursor.s
+Comment: return used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 9 in file maincursor.s
+   Uses
+      None
+Comment: subroutin unused
+zip 00000192
+
+Symbol: zip
+   Definitions
+      At line 195 in file maincursor.s
+   Uses
+      At line 187 in file maincursor.s
+      At line 191 in file maincursor.s
+
+12 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+DATA 20000800
+
+Symbol: DATA
+   Definitions
+      At line 4 in file maincursor.s
+   Uses
+      At line 96 in file maincursor.s
+      At line 106 in file maincursor.s
+
+DATA2 20000F00
+
+Symbol: DATA2
+   Definitions
+      At line 5 in file maincursor.s
+   Uses
+      At line 111 in file maincursor.s
+Comment: DATA2 used once
+DATAZERO 20001000
+
+Symbol: DATAZERO
+   Definitions
+      At line 6 in file maincursor.s
+   Uses
+      At line 101 in file maincursor.s
+Comment: DATAZERO used once
+GPIO_PORTA_DATA 400043FC
+
+Symbol: GPIO_PORTA_DATA
+   Definitions
+      At line 1 in file maincursor.s
+   Uses
+      At line 36 in file maincursor.s
+      At line 51 in file maincursor.s
+      At line 118 in file maincursor.s
+      At line 130 in file maincursor.s
+      At line 142 in file maincursor.s
+      At line 154 in file maincursor.s
+
+SSIDR 40008008
+
+Symbol: SSIDR
+   Definitions
+      At line 2 in file maincursor.s
+   Uses
+      At line 56 in file maincursor.s
+Comment: SSIDR used once
+SSISR 4000800C
+
+Symbol: SSISR
+   Definitions
+      At line 3 in file maincursor.s
+   Uses
+      At line 45 in file maincursor.s
+Comment: SSISR used once
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+InitSysTick 00000000
+
+Symbol: InitSysTick
+   Definitions
+      At line 24 in file maincursor.s
+   Uses
+      At line 180 in file maincursor.s
+Comment: InitSysTick used once
+delayy 00000000
+
+Symbol: delayy
+   Definitions
+      At line 13 in file maincursor.s
+   Uses
+      At line 40 in file maincursor.s
+      At line 167 in file maincursor.s
+      At line 168 in file maincursor.s
+      At line 169 in file maincursor.s
+      At line 170 in file maincursor.s
+      At line 171 in file maincursor.s
+
+drawcurs 00000000
+
+Symbol: drawcurs
+   Definitions
+      At line 16 in file maincursor.s
+   Uses
+      None
+Comment: drawcurs unused
+fillzero 00000000
+
+Symbol: fillzero
+   Definitions
+      At line 15 in file maincursor.s
+   Uses
+      At line 82 in file maincursor.s
+      At line 192 in file maincursor.s
+
+get_rc 00000000
+
+Symbol: get_rc
+   Definitions
+      At line 17 in file maincursor.s
+   Uses
+      At line 94 in file maincursor.s
+Comment: get_rc used once
+gpio_f 00000000
+
+Symbol: gpio_f
+   Definitions
+      At line 18 in file maincursor.s
+   Uses
+      At line 83 in file maincursor.s
+Comment: gpio_f used once
+initGPIO 00000000
+
+Symbol: initGPIO
+   Definitions
+      At line 12 in file maincursor.s
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
+   Uses
+      At line 32 in file maincursor.s
+Comment: initGPIO used once
+initSSI 00000000
+
+Symbol: initSSI
+   Definitions
+      At line 11 in file maincursor.s
+   Uses
+      At line 33 in file maincursor.s
+Comment: initSSI used once
+mines 00000000
+
+Symbol: mines
+   Definitions
+      At line 23 in file maincursor.s
+   Uses
+      At line 109 in file maincursor.s
+Comment: mines used once
+newscreenzero 00000000
+
+Symbol: newscreenzero
+   Definitions
+      At line 21 in file maincursor.s
+   Uses
+      At line 100 in file maincursor.s
+Comment: newscreenzero used once
+screen 00000000
+
+Symbol: screen
+   Definitions
+      At line 20 in file maincursor.s
+   Uses
+      At line 95 in file maincursor.s
+Comment: screen used once
+screen2 00000000
+
+Symbol: screen2
+   Definitions
+      At line 22 in file maincursor.s
+   Uses
+      At line 110 in file maincursor.s
+Comment: screen2 used once
+screen3 00000000
+
+Symbol: screen3
+   Definitions
+      At line 25 in file maincursor.s
+   Uses
+      At line 105 in file maincursor.s
+Comment: screen3 used once
+screenzero 00000000
+
+Symbol: screenzero
+   Definitions
+      At line 19 in file maincursor.s
+   Uses
+      At line 34 in file maincursor.s
+Comment: screenzero used once
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+External symbols
+
+sendDC 00000000
+
+Symbol: sendDC
+   Definitions
+      At line 14 in file maincursor.s
+   Uses
+      At line 61 in file maincursor.s
+      At line 64 in file maincursor.s
+      At line 68 in file maincursor.s
+      At line 72 in file maincursor.s
+      At line 76 in file maincursor.s
+      At line 80 in file maincursor.s
+      At line 124 in file maincursor.s
+      At line 127 in file maincursor.s
+      At line 136 in file maincursor.s
+      At line 149 in file maincursor.s
+      At line 152 in file maincursor.s
+
+15 symbols
+369 symbols in table

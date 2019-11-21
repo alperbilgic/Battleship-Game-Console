@@ -1,0 +1,198 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400043FC 
+                       GPIO_PORTA_DATA
+                               EQU              0x400043FC  ; data address
+    2 00000000 40004400 
+                       GPIO_PORTA_DIR
+                               EQU              0x40004400
+    3 00000000 40004420 
+                       GPIO_PORTA_AFSEL
+                               EQU              0x40004420
+    4 00000000 4000451C 
+                       GPIO_PORTA_DEN
+                               EQU              0x4000451C
+    5 00000000 4000452C 
+                       GPIO_PORTA_PCTL
+                               EQU              0x4000452C
+    6 00000000 400FE608 
+                       SYSCTL_RCGCGPIO
+                               EQU              0x400FE608
+    7 00000000 00202200 
+                       PCTL_NUMBER
+                               EQU              0x00202200
+    8 00000000         
+    9 00000000         
+   10 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+   11 00000000                 AREA             subroutin, READONLY, CODE
+   12 00000000                 THUMB
+   13 00000000         
+   14 00000000                 EXPORT           initGPIO    ; Make available
+   15 00000000         
+   16 00000000         initGPIO
+                               PROC
+   17 00000000         
+   18 00000000 B417            PUSH             {R1,R0,R4,R2}
+   19 00000002         
+   20 00000002 4814            LDR              R0,=SYSCTL_RCGCGPIO
+   21 00000004 6801            LDR              R1,[R0]
+   22 00000006 F041 0101       ORR              R1,#0x01    ; PORT A CAN BE SET
+                                                             FROM THE SECOND BI
+                                                            T
+   23 0000000A 6001            STR              R1,[R0]     ; THE CLOCK OF PORT
+                                                             A IS SET
+   24 0000000C BF00            NOP
+   25 0000000E BF00            NOP
+   26 00000010 BF00            NOP
+   27 00000012         
+   28 00000012 4911            LDR              R1,=GPIO_PORTA_DEN ; THIS SHOUL
+                                                            D BE ENABLED TO LET
+                                                             THE DIGITAL I/O
+   29 00000014 6808            LDR              R0,[ R1 ]
+   30 00000016 F040 00EC       ORR              R0,#0xEC    ; RX and PA0 pins a
+                                                            re desabled
+   31 0000001A 6008            STR              R0,[ R1 ]   ; CONFIGURATION OF 
+                                                            PORT A ENDS
+   32 0000001C         
+   33 0000001C 480F            LDR              R0,=GPIO_PORTA_DIR
+   34 0000001E 6801            LDR              R1,[R0]
+   35 00000020 F001 0100       AND              R1,R1,#0x00 ; CLEAR R1
+   36 00000024 F041 01C0       ORR              R1,R1,#0xC0 ; THE 1'S ARE OUT
+   37 00000028 6001            STR              R1,[R0]
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   38 0000002A         
+   39 0000002A 480D            LDR              R0,=GPIO_PORTA_DATA
+   40 0000002C 6801            LDR              R1,[R0]
+   41 0000002E F041 0180       ORR              R1,R1,#0x80 ; RESET = 1
+   42 00000032 6001            STR              R1,[R0]
+   43 00000034         
+   44 00000034 490B            LDR              R1,=GPIO_PORTA_AFSEL ; 
+   45 00000036 6808            LDR              R0,[ R1 ]
+   46 00000038 F020 00FF       BIC              R0,#0xFF
+   47 0000003C F040 002C       ORR              R0, #0x2C   ; CONFIGURE CLK, CE
+                                                             AND TX PINS
+   48 00000040 6008            STR              R0,[ R1 ]
+   49 00000042         
+   50 00000042 4909            LDR              R1,=GPIO_PORTA_PCTL ;
+   51 00000044 6808            LDR              R0, [R1]
+   52 00000046 4A09            LDR              R2,=PCTL_NUMBER
+   53 00000048 EA40 0002       ORR              R0,R2       ; PCTL SSI0 CONFIGU
+                                                            RATION FOR PINS 2,3
+                                                             AND 5
+   54 0000004C 6008            STR              R0, [R1]
+   55 0000004E         
+   56 0000004E         
+   57 0000004E BC17            POP              {R1,R0,R4,R2}
+   58 00000050         
+   59 00000050 4770            BX               LR
+   60 00000052                 ENDP
+                       
+              00 00 400FE608 
+              4000451C 
+              40004400 
+              400043FC 
+              40004420 
+              4000452C 
+              00202200 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\initgpio.d -o.\objects\initgpio.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123 -IC:\Keil_v5\AR
+M\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA
+ 526" --predefine="TM4C123GH6PM SETA 1" --list=.\listings\initgpio.lst initGPIO
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+initGPIO 00000000
+
+Symbol: initGPIO
+   Definitions
+      At line 16 in file initGPIO.s
+   Uses
+      At line 14 in file initGPIO.s
+Comment: initGPIO used once
+subroutin 00000000
+
+Symbol: subroutin
+   Definitions
+      At line 11 in file initGPIO.s
+   Uses
+      None
+Comment: subroutin unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTA_AFSEL 40004420
+
+Symbol: GPIO_PORTA_AFSEL
+   Definitions
+      At line 3 in file initGPIO.s
+   Uses
+      At line 44 in file initGPIO.s
+Comment: GPIO_PORTA_AFSEL used once
+GPIO_PORTA_DATA 400043FC
+
+Symbol: GPIO_PORTA_DATA
+   Definitions
+      At line 1 in file initGPIO.s
+   Uses
+      At line 39 in file initGPIO.s
+Comment: GPIO_PORTA_DATA used once
+GPIO_PORTA_DEN 4000451C
+
+Symbol: GPIO_PORTA_DEN
+   Definitions
+      At line 4 in file initGPIO.s
+   Uses
+      At line 28 in file initGPIO.s
+Comment: GPIO_PORTA_DEN used once
+GPIO_PORTA_DIR 40004400
+
+Symbol: GPIO_PORTA_DIR
+   Definitions
+      At line 2 in file initGPIO.s
+   Uses
+      At line 33 in file initGPIO.s
+Comment: GPIO_PORTA_DIR used once
+GPIO_PORTA_PCTL 4000452C
+
+Symbol: GPIO_PORTA_PCTL
+   Definitions
+      At line 5 in file initGPIO.s
+   Uses
+      At line 50 in file initGPIO.s
+Comment: GPIO_PORTA_PCTL used once
+PCTL_NUMBER 00202200
+
+Symbol: PCTL_NUMBER
+   Definitions
+      At line 7 in file initGPIO.s
+   Uses
+      At line 52 in file initGPIO.s
+Comment: PCTL_NUMBER used once
+SYSCTL_RCGCGPIO 400FE608
+
+Symbol: SYSCTL_RCGCGPIO
+   Definitions
+      At line 6 in file initGPIO.s
+   Uses
+      At line 20 in file initGPIO.s
+Comment: SYSCTL_RCGCGPIO used once
+7 symbols
+345 symbols in table
