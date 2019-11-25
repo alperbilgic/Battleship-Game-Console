@@ -9,7 +9,7 @@ It is an implementation of the famous Battleship game where one player places th
   - P2 needs to hit all battleships without hitting any of those citizenships
   - The winner is determined.
   
-## PROCESSOR AND HARDWARE PERIPHERALS
+## PROCESSOR AND HARDWARE COMPONENTS
 
 TIVA TM4C123GH6PM launchpad is used as the micropcocessor and NOKIA 5110 LCD screen is used for display issues. NOKIA LCD and TIVA card has SPI communication. 
   
